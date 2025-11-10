@@ -1,0 +1,50 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+import { 
+    getAuth, 
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signOut 
+} from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+
+import { firebaseConfig } from "./firebase-config.js";
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth();
+
+// SIGNUP
+if (document.getElementById("signupBtn")) {
+    document.getElementById("signupBtn").onclick = () => {
+        let email = document.getElementById("email").value;
+        let pass = document.getElementById("password").value;
+
+        createUserWithEmailAndPassword(auth, email, pass)
+        .then(() => {
+            alert("Account created!");
+            window.location.href = "login.html";
+        })
+        .catch(err => alert(err.message));
+    };
+}
+
+// LOGIN
+if (document.getElementById("loginBtn")) {
+    document.getElementById("loginBtn").onclick = () => {
+        let email = document.getElementById("loginEmail").value;
+        let pass = document.getElementById("loginPassword").value;
+
+        signInWithEmailAndPassword(auth, email, pass)
+        .then(() => {
+            window.location.href = "dashboard.html";
+        })
+        .catch(err => alert(err.message));
+    };
+}
+
+// LOGOUT
+if (document.getElementById("logoutBtn")) {
+    document.getElementById("logoutBtn").onclick = () => {
+        signOut(auth).then(() => {
+            window.location.href = "index.html";
+        });
+    };
+}
