@@ -184,3 +184,152 @@ button:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(142,68,
 
 /* Responsive */
 @media(max-width:480px){ .form-section { margin:0 15px; padding:25px; } .title { font-size:2rem; } }
+
+/* ---------- Container ---------- */
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+/* ---------- Header ---------- */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  backdrop-filter: blur(12px);
+  background: rgba(255,255,255,0.2);
+  border-radius: 12px;
+  margin-bottom: 30px;
+}
+
+.header .brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header .brand .logo {
+  width: 50px;
+  height: 50px;
+}
+
+.header h1 {
+  font-size: 1.8rem;
+  color: #4a2d5f;
+}
+
+.nav a {
+  margin-right: 15px;
+  text-decoration: none;
+  color: #7b2cbf;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.nav a:hover { color: #c084fc; }
+
+.logout-btn {
+  padding: 8px 16px;
+  border-radius: 10px;
+  background: linear-gradient(135deg,#d16ba5,#8e44ad);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.logout-btn:hover { opacity: 0.9; transform: translateY(-2px); }
+
+/* ---------- Main ---------- */
+.main-admin {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ---------- Cards ---------- */
+.card {
+  background: rgba(255,255,255,0.25);
+  backdrop-filter: blur(15px);
+  padding: 25px;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.card h2 {
+  margin-bottom: 15px;
+  color: #4a2d5f;
+}
+
+/* ---------- Bookings List ---------- */
+.admin-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.booking-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  transition: all 0.2s ease;
+}
+
+.booking-item:hover {
+  background: rgba(255,255,255,0.25);
+}
+
+.booking-info strong {
+  font-size: 1.1rem;
+  color: #3a2c42;
+}
+
+.booking-info .small {
+  font-size: 0.85rem;
+  color: #5b3473;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn.secondary {
+  background: linear-gradient(135deg,#ff6b6b,#ff8787);
+  color: #fff;
+}
+
+.btn.secondary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 107, 107,0.3);
+}
+
+/* ---------- Animations ---------- */
+.fade-up {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.5s forwards;
+}
+
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- Responsive ---------- */
+@media(max-width:768px){
+  .header { flex-direction: column; align-items: flex-start; gap: 15px; }
+  .booking-item { flex-direction: column; align-items: flex-start; gap: 8px; }
+}
