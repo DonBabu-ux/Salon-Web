@@ -152,3 +152,35 @@ button:hover {
         font-size: 2rem;
     }
 }
+
+/* Global Reset */
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: "Poppins", sans-serif; }
+body { min-height: 100vh; background: linear-gradient(135deg,#f7c1cc,#e8d3f8,#c8e7f5); display: flex; flex-direction: column; align-items: center; justify-content: center; color: #3a2c42; }
+
+/* Header */
+header { margin-bottom: 20px; text-align: center; }
+.title { font-size: 2.4rem; font-weight: 600; color: #4a2d5f; letter-spacing: 1px; }
+
+/* Form Section */
+.form-section { width: 100%; max-width: 420px; padding: 30px; background: rgba(255,255,255,0.25); backdrop-filter: blur(18px); border-radius: 18px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.4); }
+
+/* Fieldset & Legend */
+fieldset { border: none; }
+legend { font-size: 1.4rem; font-weight: 500; margin-bottom: 15px; color: #5b3473; }
+
+/* Labels & Inputs */
+label { display: block; margin-bottom: 15px; font-size: 0.9rem; }
+input { width: 100%; padding: 12px 14px; margin-top: 6px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.6); background: rgba(255,255,255,0.5); backdrop-filter: blur(10px); font-size: 0.95rem; outline: none; transition: all 0.3s ease; }
+input:focus { border-color: #c084fc; background: rgba(255,255,255,0.75); box-shadow: 0 0 0 3px rgba(192,132,252,0.25); }
+
+/* Buttons */
+button { width: 100%; padding: 12px; margin-top: 10px; border: none; border-radius: 12px; font-size: 1rem; font-weight: 500; color: #fff; background: linear-gradient(135deg,#d16ba5,#8e44ad); cursor: pointer; transition: all 0.3s ease; }
+button:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(142,68,173,0.4); }
+
+/* Links */
+.login-text { text-align: center; margin-top: 18px; font-size: 0.9rem; }
+.login-text a { color: #7b2cbf; text-decoration: none; font-weight: 500; }
+.login-text a:hover { text-decoration: underline; }
+
+/* Responsive */
+@media(max-width:480px){ .form-section { margin:0 15px; padding:25px; } .title { font-size:2rem; } }
