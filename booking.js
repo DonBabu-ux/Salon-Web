@@ -7,7 +7,8 @@ import {
   updateDoc,
   serverTimestamp,
   query,
-  where
+  where,
+  onSnapshot
 } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 
 import { auth, db } from "./firebase.js";
@@ -43,79 +44,112 @@ export async function book(service, price, date, time) {
 }
 
 /* =====================================================
-   USER: LOAD OWN BOOKINGS
+   USER: LOAD OWN BOOKINGS (REAL-TIME)
 ===================================================== */
-export async function loadUserBookings(elementId) {
+export function loadUserBookings(elementId) {
   const listEl = document.getElementById(elementId);
   if (!listEl) return;
 
-  const user = auth.currentUser;
-  if (!user) return;
+  auth.onAuthStateChanged(user => {
+    if (!user) return;
 
-  listEl.innerHTML = "";
+    const q = query(collection(db, "bookings"), where("uid", "==", user.uid));
 
-  const q = query(
-    collection(db, "bookings"),
-    where("uid", "==", user.uid)
-  );
+    onSnapshot(q, snap => {
+      listEl.innerHTML = "";
 
-  const snap = await getDocs(q);
+      if (snap.empty) {
+        listEl.innerHTML = "<li>No bookings yet</li>";
+        return;
+      }
 
-  if (snap.empty) {
-    listEl.innerHTML = "<li>No bookings yet</li>";
-    return;
-  }
+      snap.forEach(d => {
+        const b = d.data();
 
-  snap.forEach(d => {
-    const b = d.data();
+        const li = document.createElement("li");
+        li.className = "booking-item";
+        li.innerHTML = `
+          <strong>${b.service}</strong><br>
+          ${b.date} • ${b.time}<br>
+          Price: KSh ${b.price}<br>
+          Status: <b>${b.status}</b>
+          ${b.status === "pending" ? `<button class="btn cancel" data-id="${d.id}">Cancel</button>` : ""}
+        `;
+        listEl.appendChild(li);
+      });
 
-    const li = document.createElement("li");
-    li.innerHTML = `
-      <strong>${b.service}</strong><br>
-      ${b.date} • ${b.time}<br>
-      Price: KSh ${b.price}<br>
-      Status: <b>${b.status}</b>
-    `;
-
-    listEl.appendChild(li);
+      // Cancel pending bookings
+      listEl.querySelectorAll(".cancel").forEach(btn => {
+        btn.addEventListener("click", async e => {
+          const id = e.target.dataset.id;
+          if (!confirm("Cancel this booking?")) return;
+          await deleteDoc(doc(db, "bookings", id));
+          alert("Booking canceled");
+        });
+      });
+    });
   });
 }
 
 /* =====================================================
-   ADMIN: LOAD ALL BOOKINGS
+   ADMIN: LOAD ALL BOOKINGS (REAL-TIME)
 ===================================================== */
-export async function listAllBookings() {
-  const snap = await getDocs(collection(db, "bookings"));
-  const bookings = [];
+export function loadAllBookingsAdmin(elementId) {
+  const listEl = document.getElementById(elementId);
+  if (!listEl) return;
 
-  snap.forEach(d => {
-    bookings.push({ id: d.id, ...d.data() });
+  const q = collection(db, "bookings");
+
+  onSnapshot(q, snap => {
+    listEl.innerHTML = "";
+    if (snap.empty) {
+      listEl.innerHTML = "<div class='small'>No bookings yet</div>";
+      return;
+    }
+
+    snap.forEach(d => {
+      const b = d.data();
+      const div = document.createElement("div");
+      div.className = "booking-item";
+      div.innerHTML = `
+        <div class="booking-info">
+          <strong>${b.service}</strong><br>
+          ${b.date} • ${b.time}<br>
+          ${b.email}<br>
+          Price: KSh ${b.price}<br>
+          Status: <b>${b.status}</b>
+        </div>
+        <div class="booking-actions">
+          ${b.status === "pending" ? `
+            <button class="btn approve" data-id="${d.id}">Approve</button>
+            <button class="btn reject" data-id="${d.id}">Reject</button>` : ""}
+          <button class="btn secondary delete" data-id="${d.id}">Delete</button>
+        </div>
+      `;
+      listEl.appendChild(div);
+    });
+
+    // Admin actions
+    listEl.querySelectorAll(".approve").forEach(btn => {
+      btn.addEventListener("click", async e => {
+        const id = e.target.dataset.id;
+        await updateDoc(doc(db, "bookings", id), { status: "approved" });
+      });
+    });
+
+    listEl.querySelectorAll(".reject").forEach(btn => {
+      btn.addEventListener("click", async e => {
+        const id = e.target.dataset.id;
+        await updateDoc(doc(db, "bookings", id), { status: "rejected" });
+      });
+    });
+
+    listEl.querySelectorAll(".delete").forEach(btn => {
+      btn.addEventListener("click", async e => {
+        const id = e.target.dataset.id;
+        if (!confirm("Delete booking?")) return;
+        await deleteDoc(doc(db, "bookings", id));
+      });
+    });
   });
-
-  return bookings;
-}
-
-/* =====================================================
-   ADMIN: APPROVE BOOKING
-===================================================== */
-export async function approveBooking(id) {
-  await updateDoc(doc(db, "bookings", id), {
-    status: "approved"
-  });
-}
-
-/* =====================================================
-   ADMIN: REJECT BOOKING
-===================================================== */
-export async function rejectBooking(id) {
-  await updateDoc(doc(db, "bookings", id), {
-    status: "rejected"
-  });
-}
-
-/* =====================================================
-   ADMIN: DELETE BOOKING (OPTIONAL)
-===================================================== */
-export async function deleteBooking(id) {
-  await deleteDoc(doc(db, "bookings", id));
 }
