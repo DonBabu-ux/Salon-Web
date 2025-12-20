@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Dashboard - Salon Web</title>
   <link rel="stylesheet" href="style.css"/>
 </head>
@@ -17,7 +17,6 @@
       <a href="profile.html">Profile</a>
       <a href="admin.html">Admin</a>
       <button id="logoutBtn" class="toggle">Logout</button>
-      <button class="toggle" id="themeToggle">Theme</button>
     </div>
   </header>
 
@@ -25,14 +24,13 @@
     <section class="hero card fade-up">
       <div class="intro">
         <h2>Book a Service</h2>
-        <p class="small">Choose a service, pick a date & time, and confirm — we’ll save your booking.</p>
+        <p class="small">Select service, date & time, then confirm.</p>
         <div class="calendar" style="margin-top:12px">
           <div class="date-picker card">
             <label>Choose date
               <input id="bookingDate" type="date"/>
             </label>
           </div>
-
           <div style="flex:1">
             <h4 class="small">Available time slots</h4>
             <div id="timeSlots" class="time-slots card"></div>
@@ -50,7 +48,7 @@
             <div class="img" style="background-image:url('assets/service-hair.jpg')"></div>
             <div class="body">
               <h3>Hair Styling</h3>
-              <p class="small">Looking sharp — includes wash & finish</p>
+              <p class="small">Includes wash & finish</p>
               <div style="display:flex;justify-content:space-between;align-items:center">
                 <div class="small">KSh 800</div>
                 <button class="btn" data-service="Hair Styling" data-price="800">Select</button>
@@ -91,69 +89,6 @@
     </section>
   </main>
 
-  <script type="module">
-    import { getCurrentUserProfile } from "./main.js";
-    import { loadBookings, book } from "./booking.js";
-
-    let selected = { service:null, price:null, date:null, time:null };
-
-    const timeSlots = ["09:00 AM","09:30 AM","10:00 AM","10:30 AM","11:00 AM","11:30 AM","12:00 PM","01:00 PM","01:30 PM","02:00 PM","03:00 PM","04:00 PM"];
-
-    function renderSlots(){
-      const container = document.getElementById("timeSlots");
-      container.innerHTML = "";
-      timeSlots.forEach(t=>{
-        const b = document.createElement("button");
-        b.className = "btn secondary";
-        b.style.width = "100%";
-        b.textContent = t;
-        b.addEventListener("click", ()=> {
-          selected.time = t;
-          // highlight selected
-          container.querySelectorAll("button").forEach(x=> x.style.opacity = 0.7);
-          b.style.opacity = 1;
-        });
-        container.appendChild(b);
-      });
-    }
-
-    document.addEventListener("DOMContentLoaded", async ()=>{
-      renderSlots();
-      await getCurrentUserProfile(); // ensures user is available
-      loadBookings();
-    });
-
-    // service select
-    document.querySelectorAll(".service-card .btn").forEach(btn=>{
-      btn.addEventListener("click",(e)=>{
-        selected.service = btn.dataset.service;
-        selected.price = btn.dataset.price;
-        alert("Selected " + selected.service + " — pick date & time, then confirm.");
-      });
-    });
-
-    // date change
-    document.getElementById("bookingDate").addEventListener("change", (e)=> selected.date = e.target.value);
-
-    // confirm booking
-    document.getElementById("confirmBooking").addEventListener("click", async ()=>{
-      if (!selected.service || !selected.date || !selected.time) { alert("Select service, date and time"); return; }
-      // call global book function from booking.js
-      await book(selected.service, selected.price); // this will prompt if not integrated
-      // Alternative improved approach: create add booking directly via firestore — handled in booking.js
-    });
-
-    // logout handler
-    document.getElementById("logoutBtn").addEventListener("click", async ()=>{
-      const { getAuth, signOut } = await import("https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js");
-      await signOut(getAuth());
-      window.location.href = "index.html";
-    });
-
-  </script>
-
-  <script type="module" src="ui.js"></script>
-  <script type="module" src="booking.js"></script>
+  <script type="module" src="dashboard.js"></script>
 </body>
 </html>
-
