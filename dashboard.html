@@ -13,7 +13,7 @@
       <h1>Salon Web</h1>
     </div>
     <div class="nav">
-      <a href="home.html">Home</a>
+      <a href="index.html">Home</a>
       <a href="profile.html">Profile</a>
       <a href="admin.html">Admin</a>
       <button id="logoutBtn" class="toggle">Logout</button>
@@ -92,7 +92,7 @@
   </main>
 
   <script type="module">
-    import { getCurrentUserProfile } from "./auth.js";
+    import { getCurrentUserProfile } from "./main.js";
     import { loadBookings, book } from "./booking.js";
 
     let selected = { service:null, price:null, date:null, time:null };
@@ -156,3 +156,4 @@
   <script type="module" src="booking.js"></script>
 </body>
 </html>
+
