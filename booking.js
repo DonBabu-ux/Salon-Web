@@ -1,5 +1,14 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+import { 
+  getFirestore, 
+  collection, 
+  addDoc, 
+  getDocs, 
+  doc, 
+  deleteDoc,
+  updateDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
 
 // Firebase config
@@ -19,7 +28,7 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 
 // -----------------------------
-// Add Booking
+// USER: Add Booking (NOW PENDING)
 // -----------------------------
 export async function book(service, price) {
   const user = auth.currentUser;
@@ -29,50 +38,75 @@ export async function book(service, price) {
     service,
     price,
     date: new Date().toLocaleString(),
-    email: user.email,    // store user info
-    uid: user.uid
+    email: user.email,
+    uid: user.uid,
+
+    status: "pending",               // ✅ NEW
+    createdAt: serverTimestamp()     // ✅ NEW
   });
 
-  alert("Booked successfully!");
+  alert("Booking submitted. Awaiting admin approval.");
 }
 
 // -----------------------------
-// List All Bookings (for admin)
+// ADMIN: List All Bookings
 // -----------------------------
 export async function listAllBookings() {
   const querySnap = await getDocs(collection(db, "bookings"));
   const list = [];
-  querySnap.forEach(doc => {
-    list.push({ id: doc.id, ...doc.data() });
+  querySnap.forEach(d => {
+    list.push({ id: d.id, ...d.data() });
   });
   return list;
 }
 
 // -----------------------------
-// Delete Booking (for admin)
+// ADMIN: Approve Booking
+// -----------------------------
+export async function approveBooking(id) {
+  await updateDoc(doc(db, "bookings", id), {
+    status: "approved"
+  });
+}
+
+// -----------------------------
+// ADMIN: Reject Booking
+// -----------------------------
+export async function rejectBooking(id) {
+  await updateDoc(doc(db, "bookings", id), {
+    status: "rejected"
+  });
+}
+
+// -----------------------------
+// ADMIN: Delete Booking (optional)
 // -----------------------------
 export async function deleteBooking(id) {
   await deleteDoc(doc(db, "bookings", id));
 }
 
 // -----------------------------
-// Load Bookings for User Dashboard
+// USER: Load Own Bookings + Status
 // -----------------------------
 export async function loadUserBookings(elementId) {
   const listEl = document.getElementById(elementId);
-  if(!listEl) return;
+  if (!listEl) return;
 
   const user = auth.currentUser;
-  if(!user) return;
+  if (!user) return;
 
   listEl.innerHTML = "";
 
   const querySnap = await getDocs(collection(db, "bookings"));
-  querySnap.forEach(doc => {
-    const data = doc.data();
-    if(data.uid === user.uid){
+  querySnap.forEach(d => {
+    const data = d.data();
+    if (data.uid === user.uid) {
       const li = document.createElement("li");
-      li.textContent = `${data.service} - KSh ${data.price} - ${data.date}`;
+      li.innerHTML = `
+        <strong>${data.service}</strong> - KSh ${data.price}<br>
+        ${data.date}<br>
+        <span>Status: <b>${data.status}</b></span>
+      `;
       listEl.appendChild(li);
     }
   });
