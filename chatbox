@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Hybrid Q&A Chatbot (Simple)</title>
+  <style>
+    /* ====== Simple styles - paste into the <head> ====== */
+    body { font-family: system-ui, Arial; background:#f4f6f8; display:flex; justify-content:center; padding:40px; }
+    .chat-container { width:360px; background:#fff; border-radius:12px; box-shadow:0 8px 30px rgba(0,0,0,0.08); overflow:hidden; }
+    .chat-header { padding:12px 16px; background:linear-gradient(90deg,#FFB347,#4CAF50); color:#fff; font-weight:700; }
+    #chatBody { height:320px; padding:12px; overflow-y:auto; background:#fafafa; }
+    .msg { margin-bottom:10px; padding:8px 10px; border-radius:10px; max-width:85%; }
+    .user-msg { margin-left:auto; background:#e6f0ff; text-align:right; }
+    .bot-msg { margin-right:auto; background:#f2f2f2; }
+    .chat-foot { display:flex; gap:8px; padding:12px; background:#fff; }
+    #msg { flex:1; padding:8px 10px; border-radius:8px; border:1px solid #ddd; }
+    button { padding:8px 12px; border-radius:8px; border:none; cursor:pointer; background:#4CAF50; color:#fff; }
+    button:active{ transform:translateY(1px); }
+    #typing { font-style:italic; color:#666; margin-bottom:8px; }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <div class="chat-header">Don the Techie — Q&A Bot</div>
+
+    <div id="chatBody" aria-live="polite">
+      <!-- messages appear here -->
+      <p class="bot-msg msg"><strong>Bot:</strong> Hi — ask me anything about our services, price, contact or location.</p>
+    </div>
+
+    <div class="chat-foot">
+      <input id="msg" placeholder="Type your question..." autocomplete="off" />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    /* ====== Paste JS below ====== */
+
+    // ===== SIMPLE ADVANCED Q&A DATA =====
+    const qaData = [
+    {keywords: ["greetings","hey","hello","bonjour","how are you","Hi","hey"], answer: "Hello! We are Mama-Waithira Beauty services bot!!How can we help you our dear customer?" }, 
+    
+
+    { keywords: ["services", "offer", "do you do","What services do you offer?","our generosity","work we do"], answer: "We offer many salon services which include manicure pedicure,nail art,barber services, blow dry, hair dying, and braiding etc." },
+      { keywords: ["price", "cost", "charge","money","rate"], answer: "Our prices start at any price depending on your needs." },
+      { keywords: ["contact", "phone", "call", "reach","handles","dial"], answer: "You can reach us at 0712 345 678 or support@example.com." },
+      { keywords: ["location", "where are you", "office", "based","settlement","residence","place of work"], answer: "We are located in Nairobi, Kenya." }
+    ];
+
+    // ===== helper: find best answer from qaData =====
+    function getSmartAnswer(message) {
+      const text = message.toLowerCase();
+      // exact keyword match first
+      for (let item of qaData) {
+        for (let key of item.keywords) {
+          if (text.includes(key)) return item.answer;
+        }
+      }
+      // fallback if nothing found
+      return null;
+    }
+
+    // ===== UI + main sendMessage function =====
+    function appendMessage(html, who = "bot") {
+      const body = document.getElementById("chatBody");
+      const div = document.createElement("div");
+      div.className = "msg " + (who === "user" ? "user-msg" : "bot-msg");
+      div.innerHTML = html;
+      body.appendChild(div);
+      body.scrollTop = body.scrollHeight;
+    }
+
+    async function sendMessage() {
+      const input = document.getElementById("msg");
+      const text = input.value.trim();
+      if (!text) return;
+
+      appendMessage(`<strong>You:</strong> ${escapeHtml(text)}`, "user");
+
+      // show typing indicator
+      const body = document.getElementById("chatBody");
+      const typing = document.createElement("div");
+      typing.id = "typing";
+      typing.textContent = "Bot is typing...";
+      body.appendChild(typing);
+      body.scrollTop = body.scrollHeight;
+
+      // check local Q&A first
+      const local = getSmartAnswer(text);
+
+      // small delay to feel natural
+      await sleep(600);
+
+      // remove typing
+      document.getElementById("typing")?.remove();
+
+      if (local) {
+        appendMessage(`<strong>Bot:</strong> ${escapeHtml(local)}`);
+      } else {
+        // fallback reply (you'll later connect this to /ai-search backend)
+        appendMessage(`<strong>Bot:</strong> Sorry, I don't have an answer for that yet. `);
+      }
+
+      input.value = "";
+      input.focus();
+    }
+
+    // tiny utilities
+    function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+    function escapeHtml(str){
+      return str.replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
+    }
+
+    // allow Enter key
+    document.getElementById("msg").addEventListener("keydown", function(e){
+      if (e.key === "Enter") { e.preventDefault(); sendMessage(); }
+    });
+  </script>
+</body>
+</html>
