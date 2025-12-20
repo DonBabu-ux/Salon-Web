@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Salon Web</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <h1 class="title">Contact Us</h1>
+
+    <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="signup.html">Sign Up</a>
+        <a href="login.html">Login</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+</header>
+
+<section class="contact-section">
+
+    <div class="glass-card">
+        <h2>Phone Contact</h2>
+        <p>If you need our services, reach us directly:</p>
+        <a class="contact-btn" href="tel:+254707873458">📞 +254 707 873 458</a>
+    </div>
+
+    <div class="glass-card">
+        <h2>Email Support</h2>
+        <p>For bookings, inquiries, and feedback:</p>
+        <a class="contact-btn" href="mailto:nwaithira74@gmail.com">📩 nwaithira74@gmail.com</a>
+    </div>
+
+    <div class="glass-card">
+        <h2>Visit Us</h2>
+        <p>We are located at:</p>
+        <p><strong>📍 Mama-Waithira Salon</strong><br>Kenya - Nairobi & Nyeri Town, Skuta</p>
+        <p>Open: <strong>7:00 AM</strong> — Close: <strong>10:00 PM</strong><br>
+        Reliable 24/7 Support</p>
+    </div>
+
+</section>
+
+<footer class="footer">
+    <p>&copy; 2025 Mama-Waithira Beauty Services. All rights reserved.</p>
+    <p>For website complaints, email: 
+        <a href="mailto:lewismwangi990@gmail.com">lewismwangi990@gmail.com</a>
+    </p>
+</footer>
+
+<!-- ✅ Support Bot Widget -->
+<div class="chat-bot" id="chatBot">
+    <div class="chat-header">💬 Help Desk</div>
+    <div class="chat-body" id="chatBody">
+        <p class="bot-msg">Hi! How can we assist you today?</p>
+    </div>
+    <input type="text" id="chatInput" placeholder="Type a message..." />
+</div>
+
+<button class="chat-toggle" onclick="toggleBot()">💬</button>
+
+<script>
+function toggleBot() {
+    const bot = document.getElementById("chatBot");
+    bot.classList.toggle("show");
+}
+
+document.getElementById("chatInput").addEventListener("keypress", function(e){
+    if (e.key === "Enter") {
+        let text = this.value.trim();
+        if(text === "") return;
+
+        let body = document.getElementById("chatBody");
+
+        let userMsg = document.createElement("p");
+        userMsg.className = "user-msg";
+        userMsg.textContent = text;
+        body.appendChild(userMsg);
+
+        // Simple preset replies (SAFE)
+        let botReply = document.createElement("p");
+        botReply.className = "bot-msg";
+
+        if (text.toLowerCase().includes("price")) {
+            botReply.textContent = "Our services range from KSh 500 - 1000 depending on the style.";
+        } else if (text.toLowerCase().includes("location")) {
+            botReply.textContent = "We are located in Nairobi & Nyeri Town, Skuta.";
+        } else if (text.toLowerCase().includes("open")) {
+            botReply.textContent = "We open at 7:00 AM and close at 10:00 PM.";
+        } else {
+            botReply.textContent = "Thank you for your message! Our team will get back to you shortly.";
+        }
+
+        body.appendChild(botReply);
+        body.scrollTop = body.scrollHeight;
+
+        this.value = "";
+    }
+});
+</script>
+
+</body>
+</html>
