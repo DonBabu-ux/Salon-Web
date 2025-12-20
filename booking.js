@@ -30,23 +30,27 @@ const auth = getAuth(app);
 // -----------------------------
 // USER: Add Booking (NOW PENDING)
 // -----------------------------
-export async function book(service, price) {
+export async function book(service, price, date, time) {
   const user = auth.currentUser;
-  if (!user) return alert("You must be logged in to book!");
+  if (!user) {
+    alert("You must be logged in to book");
+    return;
+  }
 
   await addDoc(collection(db, "bookings"), {
     service,
     price,
-    date: new Date().toLocaleString(),
+    date,
+    time,
     email: user.email,
     uid: user.uid,
-
-    status: "pending",               // ✅ NEW
-    createdAt: serverTimestamp()     // ✅ NEW
+    status: "pending",
+    createdAt: serverTimestamp()
   });
 
-  alert("Booking submitted. Awaiting admin approval.");
+  alert("Booking submitted and pending approval");
 }
+
 
 // -----------------------------
 // ADMIN: List All Bookings
@@ -111,3 +115,4 @@ export async function loadUserBookings(elementId) {
     }
   });
 }
+
