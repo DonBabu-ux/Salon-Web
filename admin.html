@@ -30,52 +30,102 @@
 
   <!-- Scripts -->
   <script type="module">
-    import { getCurrentUserProfile } from "./main.js";
-    import { listAllBookings, deleteBooking } from "./booking.js";
-    import { ensureAdmin } from "./admin.js";
+  import { getCurrentUserProfile } from "./main.js";
+  import { 
+    listAllBookings, 
+    deleteBooking, 
+    approveBooking, 
+    rejectBooking 
+  } from "./booking.js";
+  import { ensureAdmin } from "./admin.js";
 
-    (async ()=>{
-      const user = await getCurrentUserProfile();
-      const ok = await ensureAdmin(user?.email);
-      if (!ok) {
-        document.body.innerHTML = "<p style='padding:30px;font-size:1.2rem'>Access denied — admin only</p>"; 
-        return; 
-      }
+  (async () => {
+    const user = await getCurrentUserProfile();
+    const ok = await ensureAdmin(user?.email);
 
-      const list = await listAllBookings();
-      const el = document.getElementById("adminList");
-      if (!list.length) el.innerHTML = "<div class='small'>No bookings yet</div>";
-      else {
-        el.innerHTML = "";
-        list.forEach(item => {
-          const d = document.createElement("div");
-          d.className = "booking-item";
-          d.innerHTML = `
-            <div class="booking-info">
-              <strong>${item.service}</strong>
-              <div class="small">${item.date} • ${item.time}</div>
-              <div class="small">${item.email}</div>
-            </div>
-            <div class="booking-actions">
-              <button class="btn secondary" data-id="${item.id}">Delete</button>
-            </div>
-          `;
-          el.appendChild(d);
-        });
+    if (!ok) {
+      document.body.innerHTML =
+        "<p style='padding:30px;font-size:1.2rem'>Access denied — admin only</p>";
+      return;
+    }
 
-        // Attach delete handlers
-        el.querySelectorAll("button[data-id]").forEach(btn=>{
-          btn.addEventListener("click", async (e)=>{
-            const id = e.target.dataset.id;
-            if (!confirm("Delete booking?")) return;
-            await deleteBooking(id);
-            alert("Deleted");
-            location.reload();
-          });
-        });
-      }
-    })();
-  </script>
+    const list = await listAllBookings();
+    const el = document.getElementById("adminList");
+
+    if (!list.length) {
+      el.innerHTML = "<div class='small'>No bookings yet</div>";
+      return;
+    }
+
+    el.innerHTML = "";
+
+    list.forEach(item => {
+      const d = document.createElement("div");
+      d.className = "booking-item";
+
+      d.innerHTML = `
+        <div class="booking-info">
+          <strong>${item.service}</strong>
+          <div class="small">${item.date}</div>
+          <div class="small">${item.email}</div>
+          <div class="status">
+            Status: <b>${item.status || "pending"}</b>
+          </div>
+        </div>
+
+        <div class="booking-actions">
+          ${
+            item.status === "pending"
+              ? `
+                <button class="btn approve" data-approve="${item.id}">
+                  Approve
+                </button>
+                <button class="btn secondary reject" data-reject="${item.id}">
+                  Reject
+                </button>
+              `
+              : ""
+          }
+
+          <button class="btn danger" data-delete="${item.id}">
+            Delete
+          </button>
+        </div>
+      `;
+
+      el.appendChild(d);
+    });
+
+    // Approve
+    el.querySelectorAll("[data-approve]").forEach(btn => {
+      btn.addEventListener("click", async e => {
+        await approveBooking(e.target.dataset.approve);
+        alert("Booking approved");
+        location.reload();
+      });
+    });
+
+    // Reject
+    el.querySelectorAll("[data-reject]").forEach(btn => {
+      btn.addEventListener("click", async e => {
+        await rejectBooking(e.target.dataset.reject);
+        alert("Booking rejected");
+        location.reload();
+      });
+    });
+
+    // Delete
+    el.querySelectorAll("[data-delete]").forEach(btn => {
+      btn.addEventListener("click", async e => {
+        if (!confirm("Delete booking permanently?")) return;
+        await deleteBooking(e.target.dataset.delete);
+        alert("Deleted");
+        location.reload();
+      });
+    });
+  })();
+</script>
+
 
   <script type="module" src="main.js"></script>
 </body>
