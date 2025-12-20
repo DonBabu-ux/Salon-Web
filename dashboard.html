@@ -3,98 +3,51 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Dashboard - Salon Web</title>
+  <title>Dashboard - Mama Waithira Salon</title>
   <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-  <header class="header container">
-    <div class="brand">
-      <img class="logo" src="assets/logo.svg" alt="logo"/>
-      <h1>Salon Web</h1>
-    </div>
-    <div class="nav">
-      <a href="index.html">Home</a>
-      <a href="profile.html">Profile</a>
-      <a href="admin.html">Admin</a>
-      <button id="logoutBtn" class="toggle">Logout</button>
-    </div>
-  </header>
 
-  <main class="container">
-    <section class="hero card fade-up">
-      <div class="intro">
-        <h2>Book a Service</h2>
-        <p class="small">Select service, date & time, then confirm.</p>
-        <div class="calendar" style="margin-top:12px">
-          <div class="date-picker card">
-            <label>Choose date
-              <input id="bookingDate" type="date"/>
-            </label>
-          </div>
-          <div style="flex:1">
-            <h4 class="small">Available time slots</h4>
-            <div id="timeSlots" class="time-slots card"></div>
-            <div style="margin-top:10px">
-              <button id="confirmBooking" class="btn">Confirm Booking</button>
-            </div>
-          </div>
-        </div>
-      </div>
+<header class="header container">
+  <div class="brand">
+    <img class="logo" src="assets/logo.svg" alt="logo"/>
+    <h1>Dashboard</h1>
+  </div>
+  <div class="nav">
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="admin.html">Admin</a>
+    <button id="logoutBtn" class="toggle">Logout</button>
+  </div>
+</header>
 
-      <aside style="width:380px">
-        <h3 class="small">Services</h3>
-        <div class="services">
-          <div class="service-card">
-            <div class="img" style="background-image:url('assets/service-hair.jpg')"></div>
-            <div class="body">
-              <h3>Hair Styling</h3>
-              <p class="small">Includes wash & finish</p>
-              <div style="display:flex;justify-content:space-between;align-items:center">
-                <div class="small">KSh 800</div>
-                <button class="btn" data-service="Hair Styling" data-price="800">Select</button>
-              </div>
-            </div>
-          </div>
+<main class="container">
+  <section class="card fade-up">
+    <h2>Your Bookings</h2>
+    <ul id="bookingList" class="bookings"></ul>
+  </section>
+</main>
 
-          <div class="service-card">
-            <div class="img" style="background-image:url('assets/service-manicure.jpg')"></div>
-            <div class="body">
-              <h3>Manicure</h3>
-              <p class="small">Caring for nails & polish</p>
-              <div style="display:flex;justify-content:space-between;align-items:center">
-                <div class="small">KSh 500</div>
-                <button class="btn" data-service="Manicure" data-price="500">Select</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="service-card">
-            <div class="img" style="background-image:url('assets/service-pedicure.jpg')"></div>
-            <div class="body">
-              <h3>Pedicure</h3>
-              <p class="small">Relaxing foot care</p>
-              <div style="display:flex;justify-content:space-between;align-items:center">
-                <div class="small">KSh 600</div>
-                <button class="btn" data-service="Pedicure" data-price="600">Select</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </aside>
-    </section>
-
-    <section class="card fade-up">
-      <h3>Your Bookings</h3>
-      <ul id="bookingList" class="bookings"></ul>
-    </section>
-  </main>
-  
-<script>
+<script type="module">
+  import { auth } from "./firebase.js";
   import { loadUserBookings } from "./booking.js";
+
+  // Load current user's bookings
+  auth.onAuthStateChanged(user => {
+    if (!user) {
+      window.location.href = "login.html"; // redirect if not logged in
+      return;
+    }
+    loadUserBookings("bookingList");
+  });
+
+  // Logout
+  document.getElementById("logoutBtn").addEventListener("click", async () => {
+    const { getAuth, signOut } = await import("https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js");
+    await signOut(getAuth());
+    window.location.href = "index.html";
+  });
 </script>
 
-
-  <script type="module" src="dashboard.js"></script>
 </body>
 </html>
-
