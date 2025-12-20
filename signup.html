@@ -1,47 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign Up - Beauty Web</title>
+<link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
 <header>
-    <h1 class="title">Create Account</h1>
+    <h1 class="title">Sign Up</h1>
 </header>
 
 <section class="form-section">
-    <form class="signup">
+    <form class="signup" onsubmit="return false">
         <fieldset>
-            <legend>Sign Up</legend>
-
-            <label>Name:
-                <input type="text" id="name" required>
-            </label>
-
+            <legend>Create Account</legend>
             <label>Email:
-                <input type="email" id="email" required>
+                <input type="email" id="email" placeholder="you@example.com" required>
             </label>
-
-            <label>Phone:
-                <input type="tel" id="phone" required>
-            </label>
-
             <label>Password:
-                <input type="password" id="password" required>
+                <input type="password" id="password" placeholder="••••••••" required>
             </label>
-
             <button id="signupBtn" type="button">Sign Up</button>
         </fieldset>
     </form>
-
-    <p class="login-text">Already registered? <a href="login.html">Login</a></p>
+    <p class="login-text">Already have an account? <a href="index.html">Login</a></p>
 </section>
-<script type="module" src="main.js"> </script>
+
+<script type="module" src="main.js"></script>
 </body>
 </html>
-
-
