@@ -1,35 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Services - Mama Waithira Salon</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Services - Mama Waithira Salon</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<!-- NAVBAR -->
 <nav class="navbar glass">
-    <h2 class="logo">Mama-Waithira Salon</h2>
-    <div class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="services.html" class="active">Services</a>
-        <a href="contact.html">Contact</a>
-        <a class="btn" href="signup.html">Get Started</a>
-    </div>
+  <h2 class="logo">Mama-Waithira Salon</h2>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="services.html" class="active">Services</a>
+    <a href="contact.html">Contact</a>
+    <a class="btn" href="signup.html">Get Started</a>
+  </div>
 </nav>
 
 <section class="services-section">
-    <h1 class="title">Our Beauty Services</h1>
-
-    <div id="services-container" class="services-grid"></div>
+  <h1 class="title">Our Beauty Services</h1>
+  <div id="services-container" class="services-grid"></div>
 </section>
 
-<!-- ✅ External JavaScript file -->
-<script src="services.js"></script>
+<section class="card fade-up">
+  <h2>Your Bookings</h2>
+  <ul id="bookingList" class="bookings"></ul>
+</section>
+
+<!-- Booking Modal -->
+<div id="bookingModal" class="modal hidden">
+  <div class="modal-content glass">
+    <span id="closeModal" class="close">&times;</span>
+    <h3 id="modalServiceName"></h3>
+    <p>Price: KSh <span id="modalServicePrice"></span></p>
+    <label>Date: <input type="date" id="bookingDate"></label>
+    <label>Time:
+      <select id="bookingTime">
+        <option>09:00 AM</option>
+        <option>10:00 AM</option>
+        <option>11:00 AM</option>
+        <option>12:00 PM</option>
+        <option>01:00 PM</option>
+        <option>02:00 PM</option>
+        <option>03:00 PM</option>
+      </select>
+    </label>
+    <button id="confirmBooking" class="btn">Confirm Booking</button>
+  </div>
+</div>
+
+<script type="module">
+import { auth } from "./firebase.js";
+import { book, loadUserBookings } from "./booking.js";
+
+// Services array
+const services = [
+  { name: "Haircut", price: 800, description: "Stylish haircut tailored to your look." },
+  { name: "Manicure & Pedicure", price: 1200, description: "Beautiful nails and foot care." },
+  { name: "Facial Treatment", price: 1500, description: "Rejuvenate your skin and glow." },
+  { name: "Hair Coloring", price: 2500, description: "Change your hair color with style." },
+  { name: "Makeup", price: 2000, description: "Professional makeup for any occasion." },
+  { name: "Massage Therapy", price: 1800, description: "Relax and relieve tension." }
+];
+
+const container = document.getElementById("services-container");
+
+// Modal elements
+const modal = document.getElementById("bookingModal");
+const modalServiceName = document.getElementById("modalServiceName");
+const modalServicePrice = document.getElementById("modalServicePrice");
+const bookingDate = document.getElementById("bookingDate");
+const bookingTime = document.getElementById("bookingTime");
+const confirmBooking = document.getElementById("confirmBooking");
+const closeModal = document.getElementById("closeModal");
+
+let selectedService = null;
+
+// Render services
+services.forEach(s => {
+  const card = document.createElement("div");
+  card.className = "service-card glass";
+  card.innerHTML = `
+    <h3>${s.name}</h3>
+    <p class="desc">${s.description}</p>
+    <p class="price">KSh ${s.price}</p>
+    <button class="btn book-btn">Book Now</button>
+  `;
+  card.querySelector(".book-btn").addEventListener("click", () => {
+    selectedService = s;
+    modalServiceName.textContent = s.name;
+    modalServicePrice.textContent = s.price;
+    bookingDate.value = "";
+    modal.classList.remove("hidden");
+  });
+  container.appendChild(card);
+});
+
+// Close modal
+closeModal.addEventListener("click", () => modal.classList.add("hidden"));
+
+// Confirm booking
+confirmBooking.addEventListener("click", async () => {
+  if (!bookingDate.value || !bookingTime.value) {
+    alert("Select date and time");
+    return;
+  }
+  await book(selectedService.name, selectedService.price, bookingDate.value, bookingTime.value);
+  modal.classList.add("hidden");
+  loadUserBookings("bookingList");
+});
+
+// Load user bookings
+auth.onAuthStateChanged(user => {
+  if (!user) return;
+  loadUserBookings("bookingList");
+});
+</script>
 
 </body>
 </html>
-
