@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
+  <!-- Header -->
   <header class="header container">
     <div class="brand">
       <img class="logo" src="assets/logo.svg" alt="logo"/>
@@ -15,17 +16,19 @@
     <div class="nav">
       <a href="home.html">Site</a>
       <a href="dashboard.html">Dashboard</a>
-      <button class="toggle" id="logoutBtn">Logout</button>
+      <button class="btn logout-btn" id="logoutBtn">Logout</button>
     </div>
   </header>
 
-  <main class="container">
+  <!-- Main Content -->
+  <main class="container main-admin">
     <section class="card fade-up">
       <h2>All Bookings</h2>
-      <div id="adminList">Loading...</div>
+      <div id="adminList" class="admin-list">Loading...</div>
     </section>
   </main>
 
+  <!-- Scripts -->
   <script type="module">
     import { getCurrentUserProfile } from "./auth.js";
     import { listAllBookings, deleteBooking } from "./booking.js";
@@ -33,9 +36,11 @@
 
     (async ()=>{
       const user = await getCurrentUserProfile();
-      // ensure admin
       const ok = await ensureAdmin(user?.email);
-      if (!ok) { document.body.innerHTML = "<p style='padding:30px'>Access denied — admin only</p>"; return; }
+      if (!ok) {
+        document.body.innerHTML = "<p style='padding:30px;font-size:1.2rem'>Access denied — admin only</p>"; 
+        return; 
+      }
 
       const list = await listAllBookings();
       const el = document.getElementById("adminList");
@@ -45,16 +50,20 @@
         list.forEach(item => {
           const d = document.createElement("div");
           d.className = "booking-item";
-          d.innerHTML = `<div>
-              <strong>${item.service}</strong> <div class="small">${item.date} • ${item.time}</div>
+          d.innerHTML = `
+            <div class="booking-info">
+              <strong>${item.service}</strong>
+              <div class="small">${item.date} • ${item.time}</div>
               <div class="small">${item.email}</div>
             </div>
-            <div style="display:flex;gap:8px">
+            <div class="booking-actions">
               <button class="btn secondary" data-id="${item.id}">Delete</button>
-            </div>`;
+            </div>
+          `;
           el.appendChild(d);
         });
-        // attach handlers
+
+        // Attach delete handlers
         el.querySelectorAll("button[data-id]").forEach(btn=>{
           btn.addEventListener("click", async (e)=>{
             const id = e.target.dataset.id;
