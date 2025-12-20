@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <h1 class="title">Create Account</h1>
+</header>
+
+<section class="form-section">
+    <form class="signup">
+        <fieldset>
+            <legend>Sign Up</legend>
+
+            <label>Name:
+                <input type="text" id="name" required>
+            </label>
+
+            <label>Email:
+                <input type="email" id="email" required>
+            </label>
+
+            <label>Phone:
+                <input type="tel" id="phone" required>
+            </label>
+
+            <label>Password:
+                <input type="password" id="password" required>
+            </label>
+
+            <button id="signupBtn" type="button">Sign Up</button>
+        </fieldset>
+    </form>
+
+    <p class="login-text">Already registered? <a href="login.html">Login</a></p>
+</section>
+
+<script type="module" src="auth.js"></script>
+</body>
+</html>
