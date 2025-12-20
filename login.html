@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login - Beauty Web</title>
+<link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
 <header>
@@ -14,26 +13,21 @@
 </header>
 
 <section class="form-section">
-    <form class="signup">
+    <form class="signup" onsubmit="return false">
         <fieldset>
             <legend>Login</legend>
-
             <label>Email:
-                <input type="email" id="loginEmail" required>
+                <input type="email" id="loginEmail" placeholder="you@example.com" required>
             </label>
-
             <label>Password:
-                <input type="password" id="loginPassword" required>
+                <input type="password" id="loginPassword" placeholder="••••••••" required>
             </label>
-
             <button id="loginBtn" type="button">Login</button>
         </fieldset>
     </form>
-
     <p class="login-text">No account? <a href="signup.html">Create one</a></p>
 </section>
-<script type="module" src="main.js"> </script>
+
+<script type="module" src="main.js"></script>
 </body>
 </html>
-
-
