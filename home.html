@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mama Waithira Salon - Home</title>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Poppins, sans-serif;
+      overflow: hidden;
+    }
+
+    /* ✅ PRELOADER */
+    #preloader {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: #111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      color: white;
+      font-size: 25px;
+      flex-direction: column;
+    }
+
+    #preloader span {
+      margin-top: 10px;
+      font-size: 15px;
+      opacity: 0.7;
+    }
+
+    /* ✅ Background Slider */
+    #slider {
+      position: fixed;
+      width: 100%;
+      height: 100vh;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      background-size: cover;
+      background-position: center;
+      transition: opacity 1.2s ease-in-out;
+    }
+
+    /* ✅ Navigation Bar */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 20px 40px;
+      z-index: 10;
+      box-sizing: border-box;
+      background: rgba(255,255,255,0.07);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.4);
+    }
+
+    nav .logo {
+      font-size: 25px;
+      font-weight: 700;
+      color: white;
+      letter-spacing: 1px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+    }
+
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #ffe9b3;
+      text-shadow: 0 0 10px #ffe9b3;
+    }
+
+    /* ✅ Glass Hero Box */
+    .content {
+      position: absolute;
+      top: 55%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      width: 80%;
+      max-width: 550px;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 25px;
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      color: white;
+      animation: fadeIn 1.5s ease;
+    }
+
+    h1 {
+      font-size: 2.6rem;
+      font-weight: 700;
+      text-shadow: 0px 2px 5px rgba(0,0,0,0.5);
+    }
+
+    p {
+      font-size: 1.2rem;
+      margin-top: 10px;
+      opacity: 0.9;
+    }
+
+    .btn {
+      margin-top: 25px;
+      padding: 12px 30px;
+      font-size: 1.2rem;
+      border: none;
+      background: linear-gradient(135deg, #ffa95e, #ff5e62);
+      border-radius: 10px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s ease-in-out;
+    }
+
+    .btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 20px rgba(255, 94, 98, 0.7);
+    }
+
+    /* ✅ Fade Animation */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translate(-50%, -60%); }
+      to { opacity: 1; transform: translate(-50%, -50%); }
+    }
+
+    /* ✅ Chatbot Button */
+    .chatbot-btn {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      background: linear-gradient(135deg, #ffa95e, #ff5e62);
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+      animation: pulse 2s infinite;
+      border: none;
+      z-index: 10;
+    }
+
+    .chatbot-btn img {
+      width: 40px;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    /* ✅ Chatbot Box */
+    .chatbot-box {
+      position: fixed;
+      bottom: 110px;
+      right: 25px;
+      width: 330px;
+      height: 420px;
+      display: none;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(15px);
+      border-radius: 20px;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      overflow: hidden;
+      animation: fadeIn 0.4s ease;
+      z-index: 10;
+    }
+
+    .chatbot-header {
+      background: rgba(0,0,0,0.4);
+      padding: 12px;
+      text-align: center;
+      font-weight: 600;
+      color: white;
+    }
+
+    .chatbot-body {
+      padding: 10px;
+      height: 290px;
+      overflow-y: auto;
+      font-size: 14px;
+      color: white;
+    }
+
+    .chatbot-input {
+      display: flex;
+      border-top: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .chatbot-input input {
+      width: 80%;
+      padding: 10px;
+      outline: none;
+      border: none;
+      background: rgba(255,255,255,0.2);
+      color: white;
+    }
+
+    .chatbot-input button {
+      width: 20%;
+      border: none;
+      background: #ffa95e;
+      cursor: pointer;
+      color: white;
+      font-weight: 600;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ✅ Modern Glass Preloader -->
+<div id="preloader">
+  <div class="loader-box">
+    <div class="spinner"></div>
+    <h2>Loading...</h2>
+    <p>Please wait</p>
+  </div>
+</div>
+
+  <!-- ✅ Background Slider -->
+  <div id="slider"></div>
+
+  <!-- ✅ Navigation Bar -->
+  <nav>
+    <div class="logo">Mama Waithira Salon</div>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="signup.html">Sign Up</a></li>
+    </ul>
+  </nav>
+
+  <!-- ✅ Center Glass Welcome Box -->
+  <div class="content">
+    <h1>Welcome to Mama Waithira Salon</h1>
+    <p>Step into a world of elegance, beauty, and professional care — your transformation begins here.</p>
+    <button class="btn" onclick="location.href='signup.html'">Get Started</button>
+  </div>
+
+  <!-- ✅ Chatbot Button -->
+  <button class="chatbot-btn" onclick="toggleChat()">
+    <img src="https://cdn-icons-png.flaticon.com/512/4712/4712027.png">
+  </button>
+
+  <!-- ✅ Chatbot Box -->
+  <div class="chatbot-box">
+    <div class="chatbot-header">Salon Assistant</div>
+    <div class="chatbot-body" id="chatBody">
+      <p><strong>Bot:</strong> Hi beautiful! How can I assist you today? 💬</p>
+    </div>
+
+    <div class="chatbot-input">
+      <input type="text" id="msg" placeholder="Type a message...">
+      <button onclick="sendMessage()">➡</button>
+    </div>
+  </div>
+
+
+    <script>
+  // ✅ Remove preloader once page fully loads
+  window.addEventListener("load", () => {
+    setTimeout(() => {
+      document.getElementById("preloader").style.display = "none";
+    }, 2000); // matches animation-delay
+  });
+
+
+
+    /* ✅ IMAGE SLIDER — NON-REPEATING */
+  const images = [
+    "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9",
+    "https://images.unsplash.com/photo-1522335789201-b1aab4b990e6",
+    "https://images.unsplash.com/photo-1596464716121-9f73e6f3a1c9",
+    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d",
+    "https://images.unsplash.com/photo-1508898578281-774ac4893c0c",
+    // ✅ New ones
+    "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
+  "https://images.unsplash.com/photo-1518770660439-4636190af475",
+  "https://images.unsplash.com/photo-1581090464777-5cbf27cecc3f",
+  "https://images.unsplash.com/photo-1551033406-611cf9a28f67",
+  "https://images.unsplash.com/photo-1535223289827-42f1e9919769",
+  "https://images.unsplash.com/photo-1481277542470-605612bd2d61",
+  "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40",
+  "https://images.unsplash.com/photo-1526378722484-cc1abf2c36d9",
+  "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
+  "https://images.unsplash.com/photo-1542751110-97427bbecf20",
+  "https://images.unsplash.com/photo-1522335789201-b1aab4b990e6",
+  "https://images.unsplash.com/photo-1596464716121-9f73e6f3a1c9",
+  "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
+  "https://images.unsplash.com/photo-1506784365847-bbad939e9335",
+  "https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
+  "https://images.unsplash.com/photo-1518837695005-2083093ee35b",
+  "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
+  "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
+  "https://images.unsplash.com/photo-1470770841072-f978cf4d019e",
+  "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
+  "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
+  "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
+  "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
+  "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
+  "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
+  "https://images.unsplash.com/photo-1518770660439-4636190af475",
+  "https://images.unsplash.com/photo-1581090464777-5cbf27cecc3f",
+  "https://images.unsplash.com/photo-1551033406-611cf9a28f67",
+  "https://images.unsplash.com/photo-1535223289827-42f1e9919769",
+  "https://images.unsplash.com/photo-1481277542470-605612bd2d61",
+  "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40",
+  "https://images.unsplash.com/photo-1526378722484-cc1abf2c36d9",
+  "https://images.unsplash.com/photo-1542751110-97427bbecf20",
+  "https://images.unsplash.com/photo-1519389950473-47ba0277781c",
+  "https://images.unsplash.com/photo-1521737604893-d14cc237f11d",
+  "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7",
+  "https://images.unsplash.com/photo-1505685296765-3a2736de412f",
+  "https://images.unsplash.com/photo-1555066931-4365d14bab8c",
+  "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
+  "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d",
+  "https://images.unsplash.com/photo-1508898578281-774ac4893c0c",
+  "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800",
+  "https://images.unsplash.com/photo-1512453979798-5ea266f8880c",
+  "https://images.unsplash.com/photo-1494526585095-c41746248156",
+  "https://images.unsplash.com/photo-1504384308090-c894fdcc538d",
+  "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df",
+  "https://images.unsplash.com/photo-1469474968028-56623f02e42e",
+  "https://images.unsplash.com/photo-1523381219590-d6c2c7f1a3b7",
+  "https://images.unsplash.com/photo-1470770841072-f978cf4d019e",
+  "https://images.unsplash.com/photo-1483729558449-99ef09a8c325",
+  "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa",
+  "https://images.unsplash.com/photo-1483729558449-99ef09a8c325",
+  "https://images.unsplash.com/photo-1454789548928-9efd52dc4031",
+  "https://images.unsplash.com/photo-1470770841072-f978cf4d019e"
+];
+
+
+    
+
+    let index = 0;
+    const slider = document.getElementById("slider");
+
+    function changeImage() {
+      slider.style.opacity = 0;
+
+      setTimeout(() => {
+        slider.style.backgroundImage = `url('${images[index]}')`;
+        slider.style.opacity = 1;
+        index++;
+
+        if (index >= images.length) {
+          index = 0;
+        }
+      }, 800);
+    }
+
+    slider.style.backgroundImage = `url('${images[0]}')`;
+    setInterval(changeImage, 4000);
+
+    /* ✅ CHATBOT */
+    function toggleChat() {
+      const box = document.querySelector(".chatbot-box");
+      box.style.display = box.style.display === "block" ? "none" : "block";
+    }
+
+    function sendMessage() {
+      const input = document.getElementById("msg");
+      const body = document.getElementById("chatBody");
+
+      if (input.value.trim() === "") return;
+
+      body.innerHTML += `<p><strong>You:</strong> ${input.value}</p>`;
+      body.innerHTML += `<p><strong>Bot:</strong> Thanks for reaching out! We'll assist you shortly 😊</p>`;
+      input.value = "";
+      body.scrollTop = body.scrollHeight;
+    }
+  </script>
+
+</body>
+</html>
