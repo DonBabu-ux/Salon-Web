@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Admin Panel - Salon Web</title>
   <link rel="stylesheet" href="style.css"/>
 </head>
@@ -30,103 +30,107 @@
 
   <!-- Scripts -->
   <script type="module">
-  import { getCurrentUserProfile } from "./main.js";
-  import { 
-    listAllBookings, 
-    deleteBooking, 
-    approveBooking, 
-    rejectBooking 
-  } from "./booking.js";
-  import { ensureAdmin } from "./admin.js";
+    import { auth, db } from "./firebase.js";
+    import { collection, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 
-  (async () => {
-    const user = await getCurrentUserProfile();
-    const ok = await ensureAdmin(user?.email);
+    // Hard-coded admin emails
+    const adminEmails = ["donthetechie@gmail.com"];
 
-    if (!ok) {
-      document.body.innerHTML =
-        "<p style='padding:30px;font-size:1.2rem'>Access denied — admin only</p>";
-      return;
-    }
+    // -------------------------
+    // Ensure user is admin
+    // -------------------------
+    auth.onAuthStateChanged(async user => {
+      if (!user || !adminEmails.includes(user.email)) {
+        document.body.innerHTML = "<p style='padding:30px;font-size:1.2rem'>Access denied — admin only</p>";
+        return;
+      }
 
-    const list = await listAllBookings();
-    const el = document.getElementById("adminList");
+      loadBookings();
+    });
 
-    if (!list.length) {
-      el.innerHTML = "<div class='small'>No bookings yet</div>";
-      return;
-    }
+    // -------------------------
+    // Load all bookings
+    // -------------------------
+    async function loadBookings() {
+      const el = document.getElementById("adminList");
+      el.innerHTML = "Loading...";
 
-    el.innerHTML = "";
+      const snap = await getDocs(collection(db, "bookings"));
+      if (snap.empty) {
+        el.innerHTML = "<div class='small'>No bookings yet</div>";
+        return;
+      }
 
-    list.forEach(item => {
-      const d = document.createElement("div");
-      d.className = "booking-item";
+      el.innerHTML = "";
 
-      d.innerHTML = `
-        <div class="booking-info">
-          <strong>${item.service}</strong>
-          <div class="small">${item.date}</div>
-          <div class="small">${item.email}</div>
-          <div class="status">
-            Status: <b>${item.status || "pending"}</b>
+      snap.forEach(d => {
+        const data = d.data();
+        const div = document.createElement("div");
+        div.className = "booking-item";
+        div.innerHTML = `
+          <div class="booking-info">
+            <strong>${data.service}</strong><br>
+            ${data.date} • ${data.time}<br>
+            KSh ${data.price}<br>
+            <div class="small">User: ${data.email}</div>
+            Status: <b>${data.status}</b>
           </div>
-        </div>
-
-        <div class="booking-actions">
-          ${
-            item.status === "pending"
-              ? `
-                <button class="btn approve" data-approve="${item.id}">
-                  Approve
-                </button>
-                <button class="btn secondary reject" data-reject="${item.id}">
-                  Reject
-                </button>
-              `
-              : ""
-          }
-
-          <button class="btn danger" data-delete="${item.id}">
-            Delete
-          </button>
-        </div>
-      `;
-
-      el.appendChild(d);
-    });
-
-    // Approve
-    el.querySelectorAll("[data-approve]").forEach(btn => {
-      btn.addEventListener("click", async e => {
-        await approveBooking(e.target.dataset.approve);
-        alert("Booking approved");
-        location.reload();
+          <div class="booking-actions" style="margin-top:8px; display:flex; gap:6px">
+            ${data.status === "pending" ? `<button class="approve btn secondary" data-id="${d.id}">Approve</button>
+            <button class="reject btn secondary" data-id="${d.id}">Reject</button>` : ""}
+            <button class="delete btn secondary" data-id="${d.id}">Delete</button>
+          </div>
+        `;
+        el.appendChild(div);
       });
-    });
 
-    // Reject
-    el.querySelectorAll("[data-reject]").forEach(btn => {
-      btn.addEventListener("click", async e => {
-        await rejectBooking(e.target.dataset.reject);
-        alert("Booking rejected");
-        location.reload();
+      attachHandlers();
+    }
+
+    // -------------------------
+    // Attach button handlers
+    // -------------------------
+    function attachHandlers() {
+      document.querySelectorAll(".approve").forEach(btn => {
+        btn.addEventListener("click", async e => {
+          const id = e.target.dataset.id;
+          if (!confirm("Approve this booking?")) return;
+          await updateDoc(doc(db, "bookings", id), { status: "approved" });
+          alert("Booking approved!");
+          loadBookings();
+        });
       });
-    });
 
-    // Delete
-    el.querySelectorAll("[data-delete]").forEach(btn => {
-      btn.addEventListener("click", async e => {
-        if (!confirm("Delete booking permanently?")) return;
-        await deleteBooking(e.target.dataset.delete);
-        alert("Deleted");
-        location.reload();
+      document.querySelectorAll(".reject").forEach(btn => {
+        btn.addEventListener("click", async e => {
+          const id = e.target.dataset.id;
+          if (!confirm("Reject this booking?")) return;
+          await updateDoc(doc(db, "bookings", id), { status: "rejected" });
+          alert("Booking rejected!");
+          loadBookings();
+        });
       });
+
+      document.querySelectorAll(".delete").forEach(btn => {
+        btn.addEventListener("click", async e => {
+          const id = e.target.dataset.id;
+          if (!confirm("Delete this booking?")) return;
+          await deleteDoc(doc(db, "bookings", id));
+          alert("Booking deleted!");
+          loadBookings();
+        });
+      });
+    }
+
+    // -------------------------
+    // Logout
+    // -------------------------
+    document.getElementById("logoutBtn").addEventListener("click", async () => {
+      const { signOut } = await import("https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js");
+      await signOut(auth);
+      window.location.href = "index.html";
     });
-  })();
-</script>
 
-
-  <script type="module" src="main.js"></script>
+  </script>
 </body>
 </html>
