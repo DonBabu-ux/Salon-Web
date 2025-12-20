@@ -19,7 +19,12 @@ const auth = getAuth(app);
 // -----------------------------
 // ADMIN CONFIG
 // -----------------------------
-const adminEmails = ["donthetechie@gmail.com"]; // List of admin users
+const adminEmails = [
+  "donthetechie@gmail.com",
+  "admin2@beautyweb.com",
+  "manager@beautyweb.com"
+];
+ // List of admin users
 
 function isAdmin(email){
   return adminEmails.includes(email);
