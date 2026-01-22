@@ -1,60 +1,1350 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Dashboard - Mama Waithira Salon</title>
-  <link rel="stylesheet" href="style.css"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Dashboard - Mama Waithira Salon</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #ff6b8b;
+      --primary-light: #ff8fab;
+      --secondary: #6a5af9;
+      --accent: #4dccbd;
+      --dark: #1a1a2e;
+      --dark-light: #2d2d44;
+      --light: #f8f9fa;
+      --gray: #8e8e93;
+      --success: #4cd964;
+      --warning: #ffcc00;
+      --danger: #ff3b30;
+      --sidebar-width: 280px;
+      --header-height: 70px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      color: #333;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 2rem;
+      height: var(--header-height);
+      background: white;
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .logo {
+      width: 45px;
+      height: 45px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 20px;
+      box-shadow: 0 4px 15px rgba(255, 107, 139, 0.3);
+    }
+
+    .hamburger {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--dark);
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0.5rem;
+      transition: var(--transition);
+    }
+
+    .hamburger:hover {
+      color: var(--primary);
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .header-nav a {
+      color: var(--dark);
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      transition: var(--transition);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .header-nav a:hover {
+      background: rgba(255, 107, 139, 0.1);
+      color: var(--primary);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .notification-btn, .settings-btn {
+      background: none;
+      border: none;
+      color: var(--dark);
+      font-size: 1.2rem;
+      cursor: pointer;
+      position: relative;
+      padding: 0.5rem;
+      border-radius: 8px;
+      transition: var(--transition);
+    }
+
+    .notification-btn:hover, .settings-btn:hover {
+      background: rgba(255, 107, 139, 0.1);
+      color: var(--primary);
+    }
+
+    .notification-badge {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: var(--danger);
+      color: white;
+      font-size: 0.7rem;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .user-avatar {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(255, 107, 139, 0.3);
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: var(--header-height);
+      width: var(--sidebar-width);
+      height: calc(100vh - var(--header-height));
+      background: white;
+      box-shadow: 4px 0 20px rgba(0, 0, 0, 0.05);
+      padding: 2rem 1rem;
+      overflow-y: auto;
+      transition: var(--transition);
+      z-index: 999;
+    }
+
+    .sidebar.closed {
+      left: calc(-1 * var(--sidebar-width));
+    }
+
+    .close-sidebar {
+      display: none;
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      color: var(--dark);
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .close-sidebar:hover {
+      color: var(--primary);
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      color: var(--dark);
+      text-decoration: none;
+      border-radius: 12px;
+      margin-bottom: 0.5rem;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .nav-item:hover, .nav-item.active {
+      background: linear-gradient(90deg, rgba(255, 107, 139, 0.1), transparent);
+      color: var(--primary);
+      transform: translateX(5px);
+    }
+
+    .nav-item i {
+      width: 24px;
+      text-align: center;
+      font-size: 1.2rem;
+    }
+
+    /* Main Content */
+    .main-content {
+      margin-left: var(--sidebar-width);
+      margin-top: calc(var(--header-height) + 2rem);
+      padding: 0 2rem 2rem;
+      transition: var(--transition);
+    }
+
+    .main-content.expanded {
+      margin-left: 0;
+    }
+
+    .welcome-card {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      padding: 2.5rem;
+      border-radius: 20px;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 40px rgba(255, 107, 139, 0.3);
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .welcome-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 200px;
+      height: 200px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+    }
+
+    .welcome-card h1 {
+      font-size: 2.2rem;
+      margin-bottom: 0.5rem;
+      position: relative;
+    }
+
+    .welcome-card p {
+      opacity: 0.9;
+      font-size: 1.1rem;
+      position: relative;
+    }
+
+    /* Quick Actions */
+    .quick-actions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .action-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+      transition: var(--transition);
+      cursor: pointer;
+      border: 2px solid transparent;
+    }
+
+    .action-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+      border-color: var(--primary);
+    }
+
+    .action-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin: 0 auto 1rem;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+    }
+
+    /* Upcoming Bookings */
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 2rem 0 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid rgba(255, 107, 139, 0.1);
+    }
+
+    .section-title h2 {
+      color: var(--dark);
+      font-size: 1.5rem;
+    }
+
+    .bookings-container {
+      background: white;
+      border-radius: 20px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 5px 25px rgba(0, 0, 0, 0.05);
+    }
+
+    .booking-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 16px;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-left: 5px solid var(--primary);
+      box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+      transition: var(--transition);
+    }
+
+    .booking-card:hover {
+      transform: translateX(5px);
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .booking-info h4 {
+      color: var(--dark);
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+
+    .booking-details {
+      display: flex;
+      gap: 1rem;
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+
+    .booking-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .btn-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      border: none;
+      background: rgba(255, 107, 139, 0.1);
+      color: var(--primary);
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-icon:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* Services Grid */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .service-card {
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+      transition: var(--transition);
+    }
+
+    .service-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .service-image {
+      height: 150px;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-image i {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 3rem;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .service-content {
+      padding: 1.5rem;
+    }
+
+    .service-price {
+      color: var(--primary);
+      font-weight: bold;
+      font-size: 1.2rem;
+      margin-top: 0.5rem;
+    }
+
+    /* Chat Widget */
+    .chat-widget {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 1001;
+    }
+
+    .chat-toggle {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      box-shadow: 0 5px 20px rgba(255, 107, 139, 0.4);
+      transition: var(--transition);
+    }
+
+    .chat-toggle:hover {
+      transform: scale(1.1);
+      box-shadow: 0 8px 25px rgba(255, 107, 139, 0.6);
+    }
+
+    .chat-window {
+      position: absolute;
+      bottom: 70px;
+      right: 0;
+      width: 350px;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+      display: none;
+      overflow: hidden;
+    }
+
+    .chat-header {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      padding: 1.5rem;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .chat-messages {
+      height: 300px;
+      padding: 1.5rem;
+      overflow-y: auto;
+    }
+
+    .message {
+      margin-bottom: 1rem;
+      max-width: 80%;
+    }
+
+    .message.received {
+      margin-right: auto;
+    }
+
+    .message.sent {
+      margin-left: auto;
+    }
+
+    .message-bubble {
+      padding: 1rem;
+      border-radius: 15px;
+      position: relative;
+    }
+
+    .received .message-bubble {
+      background: rgba(255, 107, 139, 0.1);
+      border-bottom-left-radius: 5px;
+    }
+
+    .sent .message-bubble {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      border-bottom-right-radius: 5px;
+    }
+
+    .chat-input {
+      padding: 1.5rem;
+      border-top: 1px solid #eee;
+      display: flex;
+      gap: 1rem;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .chat-input input:focus {
+      border-color: var(--primary);
+    }
+
+    /* Settings Modal */
+    .settings-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .settings-content {
+      background: white;
+      width: 90%;
+      max-width: 500px;
+      border-radius: 25px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    }
+
+    .settings-header {
+      padding: 2rem;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .settings-body {
+      padding: 2rem;
+      max-height: 60vh;
+      overflow-y: auto;
+    }
+
+    .setting-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .setting-item:last-child {
+      border-bottom: none;
+    }
+
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 26px;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: var(--transition);
+      border-radius: 34px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: var(--transition);
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: var(--primary);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(24px);
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .sidebar {
+        left: calc(-1 * var(--sidebar-width));
+      }
+      
+      .sidebar.open {
+        left: 0;
+      }
+      
+      .main-content {
+        margin-left: 0;
+        padding: 1rem;
+        margin-top: calc(var(--header-height) + 1rem);
+      }
+      
+      .hamburger {
+        display: block;
+      }
+      
+      .close-sidebar {
+        display: block;
+      }
+      
+      .header-nav {
+        display: none;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header {
+        padding: 0 1rem;
+      }
+      
+      .welcome-card {
+        padding: 1.5rem;
+      }
+      
+      .welcome-card h1 {
+        font-size: 1.8rem;
+      }
+      
+      .quick-actions {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .booking-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+      
+      .booking-actions {
+        align-self: flex-end;
+      }
+      
+      .chat-window {
+        width: 90vw;
+        right: -5vw;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .quick-actions {
+        grid-template-columns: 1fr;
+      }
+      
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(-20px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.5s ease forwards;
+    }
+
+    .slide-in {
+      animation: slideIn 0.3s ease forwards;
+    }
+
+    /* Button Styles */
+    .btn {
+      padding: 0.8rem 1.5rem;
+      border-radius: 12px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      box-shadow: 0 4px 15px rgba(255, 107, 139, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(255, 107, 139, 0.4);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 107, 139, 0.1);
+      color: var(--primary);
+      border: 1px solid rgba(255, 107, 139, 0.2);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 107, 139, 0.2);
+    }
+  </style>
 </head>
 <body>
+  <!-- Header -->
+  <header class="header">
+    <div class="brand">
+      <button class="hamburger" id="hamburgerBtn">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="logo">MW</div>
+      <h2 style="color: var(--primary);">Mama Waithira Salon</h2>
+    </div>
+    
+    <nav class="header-nav">
+      <a href="index.html"><i class="fas fa-home"></i> Home</a>
+      <a href="services.html"><i class="fas fa-spa"></i> Services</a>
+      <a href="about.html"><i class="fas fa-info-circle"></i> About</a>
+      <a href="contact.html"><i class="fas fa-phone"></i> Contact</a>
+    </nav>
+    
+    <div class="header-actions">
+      <button class="notification-btn" id="notificationBtn">
+        <i class="fas fa-bell"></i>
+        <span class="notification-badge">2</span>
+      </button>
+      <button class="settings-btn" id="settingsBtn">
+        <i class="fas fa-cog"></i>
+      </button>
+      <div class="user-avatar" id="userAvatar">
+        <i class="fas fa-user"></i>
+      </div>
+    </div>
+  </header>
 
-<header class="header container">
-  <div class="brand">
-    <img class="logo" src="assets/logo.svg" alt="logo"/>
-    <h1>Dashboard</h1>
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <button class="close-sidebar" id="closeSidebar">
+      <i class="fas fa-times"></i>
+    </button>
+    
+    <div class="user-info" style="padding: 1rem; text-align: center; margin-bottom: 2rem;">
+      <div class="user-avatar" style="margin: 0 auto 1rem; width: 80px; height: 80px; font-size: 1.5rem;">
+        <i class="fas fa-user"></i>
+      </div>
+      <h3 style="color: var(--dark); margin-bottom: 0.5rem;">Jane Muthoni</h3>
+      <p style="color: var(--gray); font-size: 0.9rem;">Gold Member • Since 2022</p>
+    </div>
+    
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active" onclick="switchTab('dashboard')">
+        <i class="fas fa-home"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="#" class="nav-item" onclick="switchTab('bookings')">
+        <i class="fas fa-calendar-alt"></i>
+        <span>My Bookings</span>
+        <span class="notification-badge" style="position: static; margin-left: auto;">3</span>
+      </a>
+      <a href="#" class="nav-item" onclick="switchTab('messages')">
+        <i class="fas fa-comments"></i>
+        <span>Messages</span>
+        <span class="notification-badge" style="position: static; margin-left: auto;">5</span>
+      </a>
+      <a href="#" class="nav-item" onclick="switchTab('profile')">
+        <i class="fas fa-user"></i>
+        <span>My Profile</span>
+      </a>
+      <a href="#" class="nav-item" onclick="switchTab('favorites')">
+        <i class="fas fa-heart"></i>
+        <span>Favorites</span>
+      </a>
+      <a href="#" class="nav-item" onclick="switchTab('history')">
+        <i class="fas fa-history"></i>
+        <span>Booking History</span>
+      </a>
+      <a href="#" class="nav-item" onclick="switchTab('payments')">
+        <i class="fas fa-credit-card"></i>
+        <span>Payments</span>
+      </a>
+      <a href="#" class="nav-item" onclick="switchTab('reviews')">
+        <i class="fas fa-star"></i>
+        <span>My Reviews</span>
+      </a>
+      <a href="#" class="nav-item" onclick="switchTab('vouchers')">
+        <i class="fas fa-gift"></i>
+        <span>Vouchers</span>
+      </a>
+      <a href="#" class="nav-item" onclick="switchTab('support')">
+        <i class="fas fa-headset"></i>
+        <span>Help & Support</span>
+      </a>
+      <a href="#" class="nav-item logout-btn" id="logoutBtn" style="color: var(--danger);">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Logout</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content" id="mainContent">
+    <!-- Dashboard Tab -->
+    <div id="dashboardTab" class="tab-content fade-in">
+      <div class="welcome-card">
+        <h1>Welcome back, Jane! 💇‍♀️</h1>
+        <p>Your next appointment is in 2 days. Ready to look fabulous?</p>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="quick-actions">
+        <div class="action-card" onclick="window.location.href='services.html'">
+          <div class="action-icon">
+            <i class="fas fa-calendar-plus"></i>
+          </div>
+          <h4>Book Now</h4>
+          <p style="color: var(--gray); font-size: 0.9rem;">Schedule new appointment</p>
+        </div>
+        
+        <div class="action-card" onclick="openChat()">
+          <div class="action-icon">
+            <i class="fas fa-comment-medical"></i>
+          </div>
+          <h4>Quick Chat</h4>
+          <p style="color: var(--gray); font-size: 0.9rem;">Message stylist</p>
+        </div>
+        
+        <div class="action-card" onclick="switchTab('bookings')">
+          <div class="action-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <h4>Upcoming</h4>
+          <p style="color: var(--gray); font-size: 0.9rem;">View bookings</p>
+        </div>
+        
+        <div class="action-card" onclick="window.location.href='services.html'">
+          <div class="action-icon">
+            <i class="fas fa-gift"></i>
+          </div>
+          <h4>Offers</h4>
+          <p style="color: var(--gray); font-size: 0.9rem;">Special deals</p>
+        </div>
+      </div>
+
+      <!-- Upcoming Bookings -->
+      <div class="section-title">
+        <h2><i class="fas fa-calendar-check" style="color: var(--primary);"></i> Upcoming Appointments</h2>
+        <a href="services.html" class="btn btn-primary">
+          <i class="fas fa-plus"></i> Book New
+        </a>
+      </div>
+      
+      <div class="bookings-container">
+        <div class="booking-card">
+          <div class="booking-info">
+            <h4>Hair Coloring & Styling</h4>
+            <div class="booking-details">
+              <span><i class="far fa-calendar"></i> Tomorrow, 2:30 PM</span>
+              <span><i class="fas fa-clock"></i> 2 hours</span>
+              <span><i class="fas fa-user-tie"></i> Stylist: Mary</span>
+            </div>
+          </div>
+          <div class="booking-actions">
+            <button class="btn-icon" title="Reschedule">
+              <i class="fas fa-calendar-alt"></i>
+            </button>
+            <button class="btn-icon" title="Cancel" style="background: rgba(255, 59, 48, 0.1); color: var(--danger);">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+        
+        <div class="booking-card">
+          <div class="booking-info">
+            <h4>Manicure & Pedicure</h4>
+            <div class="booking-details">
+              <span><i class="far fa-calendar"></i> Fri, Dec 15 • 10:00 AM</span>
+              <span><i class="fas fa-clock"></i> 1.5 hours</span>
+              <span><i class="fas fa-user-tie"></i> Stylist: Sarah</span>
+            </div>
+          </div>
+          <div class="booking-actions">
+            <button class="btn-icon" title="Reschedule">
+              <i class="fas fa-calendar-alt"></i>
+            </button>
+            <button class="btn-icon" title="Cancel" style="background: rgba(255, 59, 48, 0.1); color: var(--danger);">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+        
+        <div class="booking-card">
+          <div class="booking-info">
+            <h4>Facial Treatment</h4>
+            <div class="booking-details">
+              <span><i class="far fa-calendar"></i> Mon, Dec 18 • 3:00 PM</span>
+              <span><i class="fas fa-clock"></i> 1 hour</span>
+              <span><i class="fas fa-user-tie"></i> Stylist: Grace</span>
+            </div>
+          </div>
+          <div class="booking-actions">
+            <button class="btn-icon" title="Reschedule">
+              <i class="fas fa-calendar-alt"></i>
+            </button>
+            <button class="btn-icon" title="Cancel" style="background: rgba(255, 59, 48, 0.1); color: var(--danger);">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recommended Services -->
+      <div class="section-title">
+        <h2><i class="fas fa-spa" style="color: var(--primary);"></i> Recommended for You</h2>
+        <a href="services.html" class="btn btn-secondary">
+          View All Services
+        </a>
+      </div>
+      
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-image">
+            <i class="fas fa-cut"></i>
+          </div>
+          <div class="service-content">
+            <h4>Haircut & Blow Dry</h4>
+            <p>Professional haircut with styling and blow dry</p>
+            <div class="service-price">Ksh 1,500</div>
+            <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+              <i class="fas fa-calendar-plus"></i> Book Now
+            </button>
+          </div>
+        </div>
+        
+        <div class="service-card">
+          <div class="service-image">
+            <i class="fas fa-paint-brush"></i>
+          </div>
+          <div class="service-content">
+            <h4>Nail Art Design</h4>
+            <p>Creative nail designs with premium products</p>
+            <div class="service-price">Ksh 2,000</div>
+            <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+              <i class="fas fa-calendar-plus"></i> Book Now
+            </button>
+          </div>
+        </div>
+        
+        <div class="service-card">
+          <div class="service-image">
+            <i class="fas fa-spray-can"></i>
+          </div>
+          <div class="service-content">
+            <h4>Makeup Session</h4>
+            <p>Full makeup for events and special occasions</p>
+            <div class="service-price">Ksh 3,500</div>
+            <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+              <i class="fas fa-calendar-plus"></i> Book Now
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Other tabs content would load here -->
+  </main>
+
+  <!-- Floating Chat Widget -->
+  <div class="chat-widget">
+    <div class="chat-window" id="chatWindow">
+      <div class="chat-header">
+        <div>
+          <h4><i class="fas fa-comments"></i> Chat with Stylist</h4>
+          <p style="opacity: 0.8; font-size: 0.9rem;">Typically replies in 5 mins</p>
+        </div>
+        <button class="btn-icon" onclick="closeChat()" style="background: rgba(255,255,255,0.2); color: white;">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="chat-messages" id="chatMessages">
+        <div class="message received">
+          <div class="message-bubble">
+            Hello Jane! How can I help you today?
+          </div>
+          <small style="color: var(--gray); font-size: 0.8rem;">10:30 AM</small>
+        </div>
+        <div class="message sent">
+          <div class="message-bubble">
+            Hi! Can I get a hair color consultation?
+          </div>
+          <small style="color: var(--gray); font-size: 0.8rem;">10:32 AM</small>
+        </div>
+      </div>
+      <div class="chat-input">
+        <input type="text" placeholder="Type your message..." id="messageInput">
+        <button class="btn-icon" onclick="sendMessage()" style="background: var(--primary); color: white;">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
+    <button class="chat-toggle" id="chatToggle" onclick="toggleChat()">
+      <i class="fas fa-comment"></i>
+    </button>
   </div>
-  <div class="nav">
-    <a href="index.html">Home</a>
-    <a href="services.html">Services</a>
-    <a href="admin.html">Admin</a>
-    <button id="logoutBtn" class="toggle">Logout</button>
+
+  <!-- Settings Modal -->
+  <div class="settings-modal" id="settingsModal">
+    <div class="settings-content">
+      <div class="settings-header">
+        <h3><i class="fas fa-cog"></i> Settings & Preferences</h3>
+        <button class="btn-icon" id="closeSettings" style="background: rgba(255,255,255,0.2); color: white;">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="settings-body">
+        <h4 style="margin-bottom: 1rem; color: var(--dark);">Notification Settings</h4>
+        <div class="setting-item">
+          <span>Email Notifications</span>
+          <label class="toggle-switch">
+            <input type="checkbox" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="setting-item">
+          <span>SMS Reminders</span>
+          <label class="toggle-switch">
+            <input type="checkbox" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="setting-item">
+          <span>Appointment Alerts</span>
+          <label class="toggle-switch">
+            <input type="checkbox" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="setting-item">
+          <span>Promotional Offers</span>
+          <label class="toggle-switch">
+            <input type="checkbox">
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <h4 style="margin: 2rem 0 1rem; color: var(--dark);">Privacy</h4>
+        <div class="setting-item">
+          <span>Show My Profile</span>
+          <label class="toggle-switch">
+            <input type="checkbox" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="setting-item">
+          <span>Share Booking History</span>
+          <label class="toggle-switch">
+            <input type="checkbox">
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <h4 style="margin: 2rem 0 1rem; color: var(--dark);">Preferences</h4>
+        <div class="setting-item">
+          <span>Dark Mode</span>
+          <label class="toggle-switch">
+            <input type="checkbox">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="setting-item">
+          <span>Auto-confirm Bookings</span>
+          <label class="toggle-switch">
+            <input type="checkbox" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <h4 style="margin: 2rem 0 1rem; color: var(--dark);">Chat Settings</h4>
+        <div class="setting-item">
+          <span>Sound Notifications</span>
+          <label class="toggle-switch">
+            <input type="checkbox" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="setting-item">
+          <span>Read Receipts</span>
+          <label class="toggle-switch">
+            <input type="checkbox" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <h4 style="margin: 2rem 0 1rem; color: var(--dark);">Account</h4>
+        <div class="setting-item">
+          <span>Two-Factor Authentication</span>
+          <label class="toggle-switch">
+            <input type="checkbox">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="setting-item">
+          <span>Login Notifications</span>
+          <label class="toggle-switch">
+            <input type="checkbox" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #eee;">
+          <button class="btn btn-primary" style="width: 100%;" onclick="saveSettings()">
+            <i class="fas fa-save"></i> Save Settings
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
-</header>
 
-<main class="container">
-  <section class="card fade-up">
-    <h2>Your Bookings</h2>
-    <p>
-<a href="services.html>Book Here</a>
-    </p>
-    <p><a href="services.html">Book Here</a></p>
-    <ul id="bookingList" class="bookings"></ul>
-  </section>
-</main>
+  <script>
+    // DOM Elements
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const closeSidebar = document.getElementById('closeSidebar');
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('mainContent');
+    const settingsBtn = document.getElementById('settingsBtn');
+    const closeSettings = document.getElementById('closeSettings');
+    const settingsModal = document.getElementById('settingsModal');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const chatToggle = document.getElementById('chatToggle');
+    const chatWindow = document.getElementById('chatWindow');
+    const messageInput = document.getElementById('messageInput');
+    const chatMessages = document.getElementById('chatMessages');
 
-<script type="module">
-  import { auth } from "./firebase.js";
-  import { loadUserBookings } from "./booking.js";
+    // Toggle Sidebar (Hamburger Menu)
+    hamburgerBtn.addEventListener('click', () => {
+      sidebar.classList.add('open');
+      mainContent.classList.add('expanded');
+    });
 
-  // Load current user's bookings
-  auth.onAuthStateChanged(user => {
-    if (!user) {
-      window.location.href = "login.html"; // redirect if not logged in
-      return;
+    closeSidebar.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      mainContent.classList.remove('expanded');
+    });
+
+    // Settings Modal
+    settingsBtn.addEventListener('click', () => {
+      settingsModal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    });
+
+    closeSettings.addEventListener('click', () => {
+      settingsModal.style.display = 'none';
+      document.body.style.overflow = 'auto';
+    });
+
+    settingsModal.addEventListener('click', (e) => {
+      if (e.target === settingsModal) {
+        settingsModal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+      }
+    });
+
+    // Chat Functions
+    function toggleChat() {
+      chatWindow.style.display = chatWindow.style.display === 'block' ? 'none' : 'block';
+      chatToggle.innerHTML = chatWindow.style.display === 'block' ? 
+        '<i class="fas fa-times"></i>' : '<i class="fas fa-comment"></i>';
     }
-    loadUserBookings("bookingList");
-  });
 
-  // Logout
-  document.getElementById("logoutBtn").addEventListener("click", async () => {
-    const { getAuth, signOut } = await import("https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js");
-    await signOut(getAuth());
-    window.location.href = "index.html";
-  });
-</script>
+    function openChat() {
+      chatWindow.style.display = 'block';
+      chatToggle.innerHTML = '<i class="fas fa-times"></i>';
+    }
 
+    function closeChat() {
+      chatWindow.style.display = 'none';
+      chatToggle.innerHTML = '<i class="fas fa-comment"></i>';
+    }
+
+    function sendMessage() {
+      const message = messageInput.value.trim();
+      if (message) {
+        const now = new Date();
+        const timeString = now.getHours() + ':' + now.getMinutes().toString().padStart(2, '0');
+        
+        const messageElement = document.createElement('div');
+        messageElement.className = 'message sent';
+        messageElement.innerHTML = `
+          <div class="message-bubble">${message}</div>
+          <small style="color: var(--gray); font-size: 0.8rem;">${timeString}</small>
+        `;
+        
+        chatMessages.appendChild(messageElement);
+        messageInput.value = '';
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        
+        // Simulate auto-reply
+        setTimeout(() => {
+          const replies = [
+            "I'll check availability and get back to you!",
+            "Great choice! We have several color options available.",
+            "Would you like to schedule a consultation?",
+            "That service typically takes about 2 hours."
+          ];
+          const randomReply = replies[Math.floor(Math.random() * replies.length)];
+          
+          const replyElement = document.createElement('div');
+          replyElement.className = 'message received';
+          replyElement.innerHTML = `
+            <div class="message-bubble">${randomReply}</div>
+            <small style="color: var(--gray); font-size: 0.8rem;">Just now</small>
+          `;
+          chatMessages.appendChild(replyElement);
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        }, 1000);
+      }
+    }
+
+    // Send message on Enter key
+    messageInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') sendMessage();
+    });
+
+    // Logout Function
+    logoutBtn.addEventListener('click', () => {
+      if (confirm('Are you sure you want to logout?')) {
+        // Add your Firebase logout logic here
+        window.location.href = 'login.html';
+      }
+    });
+
+    // Tab Switching
+    function switchTab(tabName) {
+      const tabs = document.querySelectorAll('.tab-content');
+      tabs.forEach(tab => {
+        tab.style.display = 'none';
+      });
+      
+      // For demo, just show dashboard
+      document.getElementById('dashboardTab').style.display = 'block';
+      
+      // Update active nav item
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('active');
+      });
+      event.currentTarget.classList.add('active');
+      
+      // Close sidebar on mobile
+      if (window.innerWidth <= 1024) {
+        sidebar.classList.remove('open');
+        mainContent.classList.remove('expanded');
+      }
+    }
+
+    // Save Settings
+    function saveSettings() {
+      alert('Settings saved successfully!');
+      settingsModal.style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('dashboardTab').style.display = 'block';
+      
+      // Add click event to booking action buttons
+      document.querySelectorAll('.btn-icon[title="Reschedule"]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          alert('Redirecting to reschedule page...');
+        });
+      });
+      
+      document.querySelectorAll('.btn-icon[title="Cancel"]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (confirm('Are you sure you want to cancel this booking?')) {
+            e.target.closest('.booking-card').style.opacity = '0.5';
+            alert('Booking cancelled successfully.');
+          }
+        });
+      });
+    });
+
+    // Responsive adjustments
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 1024) {
+        sidebar.classList.remove('open');
+        mainContent.classList.remove('expanded');
+      }
+    });
+  </script>
 </body>
 </html>
-
-
-
