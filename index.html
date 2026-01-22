@@ -4,13 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mama Waithira Salon - Home</title>
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     body {
       margin: 0;
       padding: 0;
       font-family: Poppins, sans-serif;
       overflow: hidden;
+      background: #0a0a0a;
+      color: white;
     }
 
     /* ✅ PRELOADER */
@@ -28,10 +30,19 @@
       flex-direction: column;
     }
 
-    #preloader span {
-      margin-top: 10px;
-      font-size: 15px;
-      opacity: 0.7;
+    .loader-spinner {
+      width: 80px;
+      height: 80px;
+      border: 5px solid rgba(255, 169, 94, 0.2);
+      border-top: 5px solid #ffa95e;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
 
     /* ✅ Background Slider */
@@ -103,6 +114,7 @@
       border: 1px solid rgba(255, 255, 255, 0.4);
       color: white;
       animation: fadeIn 1.5s ease;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
     }
 
     h1 {
@@ -158,10 +170,11 @@
       animation: pulse 2s infinite;
       border: none;
       z-index: 10;
+      transition: transform 0.3s;
     }
 
-    .chatbot-btn img {
-      width: 40px;
+    .chatbot-btn:hover {
+      transform: scale(1.1);
     }
 
     @keyframes pulse {
@@ -194,10 +207,24 @@
       text-align: center;
       font-weight: 600;
       color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .close-chat {
+      font-size: 20px;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: opacity 0.3s;
+    }
+
+    .close-chat:hover {
+      opacity: 1;
     }
 
     .chatbot-body {
-      padding: 10px;
+      padding: 15px;
       height: 290px;
       overflow-y: auto;
       font-size: 14px;
@@ -207,6 +234,8 @@
     .chatbot-input {
       display: flex;
       border-top: 1px solid rgba(255,255,255,0.2);
+      padding: 10px;
+      background: rgba(0,0,0,0.2);
     }
 
     .chatbot-input input {
@@ -216,6 +245,8 @@
       border: none;
       background: rgba(255,255,255,0.2);
       color: white;
+      border-radius: 20px;
+      padding-left: 15px;
     }
 
     .chatbot-input button {
@@ -225,11 +256,16 @@
       cursor: pointer;
       color: white;
       font-weight: 600;
+      border-radius: 20px;
+      margin-left: 10px;
+      transition: background 0.3s;
     }
 
+    .chatbot-input button:hover {
+      background: #ff5e62;
+    }
 
-
-  /* ✅ Updates Panel */
+    /* ✅ Updates Panel */
     .updates-toggle {
       position: fixed;
       top: 90px;
@@ -335,7 +371,31 @@
       margin-top: 5px;
       display: block;
     }
- .updates-panel {
+
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+      nav {
+        padding: 15px 20px;
+      }
+      
+      nav .logo {
+        font-size: 20px;
+      }
+      
+      nav ul {
+        display: none;
+      }
+      
+      .content {
+        width: 90%;
+        padding: 30px;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .updates-panel {
         width: 90%;
         right: 5%;
         top: 80px;
@@ -345,24 +405,22 @@
         top: 80px;
         right: 20px;
       }
-
-
-
-
-    
+      
+      .chatbot-box {
+        width: 90%;
+        right: 5%;
+      }
+    }
   </style>
 </head>
 
 <body>
-
-  <!-- ✅ Modern Glass Preloader -->
-<div id="preloader">
-  <div class="loader-box">
-    <div class="spinner"></div>
+  <!-- ✅ Preloader -->
+  <div id="preloader">
+    <div class="loader-spinner"></div>
     <h2>Loading...</h2>
     <p>Please wait</p>
   </div>
-</div>
 
   <!-- ✅ Background Slider -->
   <div id="slider"></div>
@@ -379,7 +437,7 @@
     </ul>
   </nav>
 
-   <!-- ✅ Updates Panel Toggle -->
+  <!-- ✅ Updates Panel Toggle -->
   <div class="updates-toggle" onclick="toggleUpdates()">
     <i class="fas fa-bell"></i>
   </div>
@@ -427,40 +485,115 @@
 
   <!-- ✅ Chatbot Button -->
   <button class="chatbot-btn" onclick="toggleChat()">
-    <img src="https://cdn-icons-png.flaticon.com/512/4712/4712027.png">
+    <i class="fas fa-comment-dots"></i>
   </button>
 
   <!-- ✅ Chatbot Box -->
-  <div class="chatbot-box">
-    <div class="chatbot-header">Salon Assistant</div>
+  <div class="chatbot-box" id="chatbotBox">
+    <div class="chatbot-header">
+      <span>Salon Assistant</span>
+      <div class="close-chat" onclick="toggleChat()">
+        <i class="fas fa-times"></i>
+      </div>
+    </div>
     <div class="chatbot-body" id="chatBody">
       <p><strong>Bot:</strong> Hi beautiful! How can I assist you today? 💬</p>
     </div>
-
     <div class="chatbot-input">
       <input type="text" id="msg" placeholder="Type a message...">
-      <button onclick="sendMessage()">➡</button>
+      <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
     </div>
   </div>
 
+  <script>
+    // ✅ Preloader
+    window.addEventListener("load", () => {
+      setTimeout(() => {
+        document.getElementById("preloader").style.display = "none";
+      }, 2000);
+    });
 
-    <script>
+    // ✅ Image Slider
+    const images = [
+      "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=1920",
+      "https://images.unsplash.com/photo-1562322140-8baeececf3df?auto=format&fit=crop&w=1920",
+      "https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=1920",
+      "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=1920",
+      "https://images.unsplash.com/photo-1508898578281-774ac4893c0c?auto=format&fit=crop&w=1920",
+      "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1920",
+      "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1920",
+      "https://images.unsplash.com/photo-1581090464777-5cbf27cecc3f?auto=format&fit=crop&w=1920"
+    ];
 
+    let index = 0;
+    const slider = document.getElementById("slider");
 
+    function changeImage() {
+      slider.style.opacity = 0;
+      setTimeout(() => {
+        slider.style.backgroundImage = `url('${images[index]}')`;
+        slider.style.opacity = 1;
+        index = (index + 1) % images.length;
+      }, 800);
+    }
 
+    slider.style.backgroundImage = `url('${images[0]}')`;
+    setInterval(changeImage, 4000);
 
-// ✅ Toggle updates panel
+    // ✅ Chatbot Functions
+    function toggleChat() {
+      const box = document.getElementById("chatbotBox");
+      box.style.display = box.style.display === "block" ? "none" : "block";
+    }
+
+    function sendMessage() {
+      const input = document.getElementById("msg");
+      const body = document.getElementById("chatBody");
+      const message = input.value.trim();
+      
+      if (!message) return;
+      
+      body.innerHTML += `<p><strong>You:</strong> ${message}</p>`;
+      
+      // Bot responses
+      const responses = [
+        "Thanks for reaching out! Our salon hours are 9AM-8PM daily.",
+        "Would you like to book an appointment? We have slots available this week!",
+        "Our services include haircuts, coloring, treatments, and spa services.",
+        "Special offer: Book online and get 15% off your first visit!",
+        "Our location: 123 Beauty Street, Nairobi. Free parking available."
+      ];
+      
+      const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+      
+      setTimeout(() => {
+        body.innerHTML += `<p><strong>Bot:</strong> ${randomResponse} 😊</p>`;
+        body.scrollTop = body.scrollHeight;
+      }, 1000);
+      
+      input.value = "";
+      body.scrollTop = body.scrollHeight;
+      
+      // Enter key support
+      input.addEventListener("keypress", function(e) {
+        if (e.key === "Enter") {
+          sendMessage();
+        }
+      });
+    }
+
+    // ✅ Updates Panel Functions
     function toggleUpdates() {
       const panel = document.getElementById('updatesPanel');
       panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
     }
 
-      // ✅ Auto-open updates panel after 3 seconds
+    // Auto-open updates panel after 3 seconds
     setTimeout(() => {
       document.getElementById('updatesPanel').style.display = 'block';
     }, 3000);
 
-    // ✅ Simulate live updates
+    // Simulate live updates
     const updateTemplates = [
       {icon: 'fas fa-bolt', title: 'Flash Sale', text: '50% off manicures for the next 2 hours!'},
       {icon: 'fas fa-user-plus', title: 'New Stylist', text: 'Welcome our new hair color specialist, Maria'},
@@ -485,128 +618,6 @@
         updatesContent.removeChild(updatesContent.lastChild);
       }
     }, 15000);
-
-
-
-
-
-
-
-      
-  // ✅ Remove preloader once page fully loads
-  window.addEventListener("load", () => {
-    setTimeout(() => {
-      document.getElementById("preloader").style.display = "none";
-    }, 2000); // matches animation-delay
-  });
-
-
-
-    /* ✅ IMAGE SLIDER — NON-REPEATING */
-  const images = [
-    "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9",
-    "https://images.unsplash.com/photo-1522335789201-b1aab4b990e6",
-    "https://images.unsplash.com/photo-1596464716121-9f73e6f3a1c9",
-    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d",
-    "https://images.unsplash.com/photo-1508898578281-774ac4893c0c",
-    // ✅ New ones
-    "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
-  "https://images.unsplash.com/photo-1518770660439-4636190af475",
-  "https://images.unsplash.com/photo-1581090464777-5cbf27cecc3f",
-  "https://images.unsplash.com/photo-1551033406-611cf9a28f67",
-  "https://images.unsplash.com/photo-1535223289827-42f1e9919769",
-  "https://images.unsplash.com/photo-1481277542470-605612bd2d61",
-  "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40",
-  "https://images.unsplash.com/photo-1526378722484-cc1abf2c36d9",
-  "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
-  "https://images.unsplash.com/photo-1542751110-97427bbecf20",
-  "https://images.unsplash.com/photo-1522335789201-b1aab4b990e6",
-  "https://images.unsplash.com/photo-1596464716121-9f73e6f3a1c9",
-  "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
-  "https://images.unsplash.com/photo-1506784365847-bbad939e9335",
-  "https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
-  "https://images.unsplash.com/photo-1518837695005-2083093ee35b",
-  "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
-  "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
-  "https://images.unsplash.com/photo-1470770841072-f978cf4d019e",
-  "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
-  "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
-  "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
-  "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
-  "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
-  "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
-  "https://images.unsplash.com/photo-1518770660439-4636190af475",
-  "https://images.unsplash.com/photo-1581090464777-5cbf27cecc3f",
-  "https://images.unsplash.com/photo-1551033406-611cf9a28f67",
-  "https://images.unsplash.com/photo-1535223289827-42f1e9919769",
-  "https://images.unsplash.com/photo-1481277542470-605612bd2d61",
-  "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40",
-  "https://images.unsplash.com/photo-1526378722484-cc1abf2c36d9",
-  "https://images.unsplash.com/photo-1542751110-97427bbecf20",
-  "https://images.unsplash.com/photo-1519389950473-47ba0277781c",
-  "https://images.unsplash.com/photo-1521737604893-d14cc237f11d",
-  "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7",
-  "https://images.unsplash.com/photo-1505685296765-3a2736de412f",
-  "https://images.unsplash.com/photo-1555066931-4365d14bab8c",
-  "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
-  "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d",
-  "https://images.unsplash.com/photo-1508898578281-774ac4893c0c",
-  "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800",
-  "https://images.unsplash.com/photo-1512453979798-5ea266f8880c",
-  "https://images.unsplash.com/photo-1494526585095-c41746248156",
-  "https://images.unsplash.com/photo-1504384308090-c894fdcc538d",
-  "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df",
-  "https://images.unsplash.com/photo-1469474968028-56623f02e42e",
-  "https://images.unsplash.com/photo-1523381219590-d6c2c7f1a3b7",
-  "https://images.unsplash.com/photo-1470770841072-f978cf4d019e",
-  "https://images.unsplash.com/photo-1483729558449-99ef09a8c325",
-  "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa",
-  "https://images.unsplash.com/photo-1483729558449-99ef09a8c325",
-  "https://images.unsplash.com/photo-1454789548928-9efd52dc4031",
-  "https://images.unsplash.com/photo-1470770841072-f978cf4d019e"
-];
-
-
-    
-
-    let index = 0;
-    const slider = document.getElementById("slider");
-
-    function changeImage() {
-      slider.style.opacity = 0;
-
-      setTimeout(() => {
-        slider.style.backgroundImage = `url('${images[index]}')`;
-        slider.style.opacity = 1;
-        index++;
-
-        if (index >= images.length) {
-          index = 0;
-        }
-      }, 800);
-    }
-
-    slider.style.backgroundImage = `url('${images[0]}')`;
-    setInterval(changeImage, 4000);
-
-    /* ✅ CHATBOT */
-    function toggleChat() {
-      const box = document.querySelector(".chatbot-box");
-      box.style.display = box.style.display === "block" ? "none" : "block";
-    }
-
-    function sendMessage() {
-      const input = document.getElementById("msg");
-      const body = document.getElementById("chatBody");
-
-      if (input.value.trim() === "") return;
-
-      body.innerHTML += `<p><strong>You:</strong> ${input.value}</p>`;
-      body.innerHTML += `<p><strong>Bot:</strong> Thanks for reaching out! We'll assist you shortly 😊</p>`;
-      input.value = "";
-      body.scrollTop = body.scrollHeight;
-    }
   </script>
-
 </body>
 </html>
