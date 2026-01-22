@@ -4,120 +4,1073 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Services - Mama Waithira Salon</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #ff6b8b;
+      --primary-light: #ff8fab;
+      --secondary: #6a5af9;
+      --accent: #4dccbd;
+      --dark: #1a1a2e;
+      --light: #ffffff;
+      --gray: #8e8e93;
+      --light-gray: #f8f9fa;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      color: var(--dark);
+      min-height: 100vh;
+    }
+
+    /* Navigation */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 2rem;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo i {
+      font-size: 2rem;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--dark);
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    .nav-links a.active {
+      color: var(--primary);
+      background: rgba(255, 107, 139, 0.1);
+    }
+
+    .nav-links a.active::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 5px;
+      height: 5px;
+      background: var(--primary);
+      border-radius: 50%;
+    }
+
+    .btn {
+      padding: 0.8rem 2rem;
+      border-radius: 12px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      box-shadow: 0 4px 15px rgba(255, 107, 139, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(255, 107, 139, 0.4);
+    }
+
+    /* Hero Section */
+    .hero-section {
+      text-align: center;
+      padding: 5rem 2rem 3rem;
+      background: linear-gradient(135deg, rgba(255, 107, 139, 0.1), rgba(106, 90, 249, 0.1));
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="white" opacity="0.05"/></svg>');
+      background-size: cover;
+    }
+
+    .title {
+      font-size: 3.5rem;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      color: var(--gray);
+      max-width: 600px;
+      margin: 0 auto 2rem;
+    }
+
+    /* Services Grid */
+    .services-section {
+      padding: 3rem 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 2rem;
+      margin-bottom: 4rem;
+    }
+
+    .service-card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .service-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .service-badge {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 0.3rem 1rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      z-index: 2;
+    }
+
+    .service-image {
+      height: 200px;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-image i {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 4rem;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .service-content {
+      padding: 2rem;
+    }
+
+    .service-content h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--dark);
+    }
+
+    .service-desc {
+      color: var(--gray);
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    .service-price {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+    }
+
+    .service-features {
+      list-style: none;
+      margin-bottom: 1.5rem;
+    }
+
+    .service-features li {
+      padding: 0.5rem 0;
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .service-features li i {
+      color: var(--primary);
+    }
+
+    /* Bookings Section */
+    .bookings-section {
+      background: white;
+      border-radius: 20px;
+      padding: 2rem;
+      margin: 3rem auto;
+      max-width: 1400px;
+      box-shadow: var(--shadow);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid rgba(255, 107, 139, 0.1);
+    }
+
+    .section-header h2 {
+      font-size: 1.8rem;
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .bookings-list {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .booking-card {
+      background: var(--light-gray);
+      border-radius: 15px;
+      padding: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-left: 5px solid var(--primary);
+      transition: var(--transition);
+    }
+
+    .booking-card:hover {
+      transform: translateX(5px);
+    }
+
+    .booking-info h4 {
+      color: var(--dark);
+      margin-bottom: 0.5rem;
+    }
+
+    .booking-details {
+      display: flex;
+      gap: 1.5rem;
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+
+    .booking-details span {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .booking-status {
+      padding: 0.5rem 1.5rem;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .status-confirmed {
+      background: rgba(76, 217, 100, 0.1);
+      color: #4cd964;
+    }
+
+    .status-pending {
+      background: rgba(255, 204, 0, 0.1);
+      color: #ffcc00;
+    }
+
+    /* Booking Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      width: 90%;
+      max-width: 500px;
+      border-radius: 25px;
+      padding: 2.5rem;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+      position: relative;
+    }
+
+    .close {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--gray);
+      transition: var(--transition);
+    }
+
+    .close:hover {
+      color: var(--primary);
+    }
+
+    .modal-header {
+      margin-bottom: 2rem;
+    }
+
+    .modal-header h3 {
+      font-size: 1.8rem;
+      color: var(--dark);
+      margin-bottom: 0.5rem;
+    }
+
+    .modal-price {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--dark);
+      font-weight: 500;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 1rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 12px;
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(255, 107, 139, 0.1);
+    }
+
+    .time-slots {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .time-slot {
+      padding: 0.8rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .time-slot:hover {
+      border-color: var(--primary);
+      background: rgba(255, 107, 139, 0.05);
+    }
+
+    .time-slot.selected {
+      border-color: var(--primary);
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+    }
+
+    /* Stats Section */
+    .stats-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      padding: 3rem 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .stat-card {
+      text-align: center;
+      padding: 2rem;
+      background: white;
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .stat-icon {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      font-size: 1.8rem;
+      color: white;
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Footer */
+    .footer {
+      background: var(--dark);
+      color: white;
+      padding: 3rem 2rem 1rem;
+      margin-top: 4rem;
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .footer-section h4 {
+      margin-bottom: 1.5rem;
+      color: white;
+    }
+
+    .footer-section a {
+      color: #ccc;
+      text-decoration: none;
+      display: block;
+      margin-bottom: 0.5rem;
+      transition: var(--transition);
+    }
+
+    .footer-section a:hover {
+      color: var(--primary);
+      padding-left: 0.5rem;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .social-links a {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .social-links a:hover {
+      background: var(--primary);
+      transform: translateY(-3px);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .services-grid {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      }
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+      }
+
+      .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+      }
+
+      .title {
+        font-size: 2.5rem;
+      }
+
+      .hero-section {
+        padding: 3rem 1rem 2rem;
+      }
+
+      .services-section {
+        padding: 2rem 1rem;
+      }
+
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .booking-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+
+      .booking-details {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .modal-content {
+        padding: 1.5rem;
+      }
+
+      .time-slots {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .title {
+        font-size: 2rem;
+      }
+
+      .service-price {
+        font-size: 1.5rem;
+      }
+
+      .time-slots {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-up {
+      animation: fadeIn 0.6s ease forwards;
+    }
+
+    /* Utility Classes */
+    .text-center {
+      text-align: center;
+    }
+
+    .mb-1 { margin-bottom: 1rem; }
+    .mb-2 { margin-bottom: 2rem; }
+    .mb-3 { margin-bottom: 3rem; }
+    .mt-1 { margin-top: 1rem; }
+    .mt-2 { margin-top: 2rem; }
+    .mt-3 { margin-top: 3rem; }
+
+    /* Loading State */
+    .loading {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(255, 107, 139, 0.1);
+      border-radius: 50%;
+      border-top-color: var(--primary);
+      animation: spin 1s linear infinite;
+      margin: 2rem auto;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
 </head>
 <body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="logo">
+      <i class="fas fa-spa"></i>
+      Mama Waithira Salon
+    </div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="services.html" class="active">Services</a>
+      <a href="contact.html">Contact</a>
+      <a href="dashboard.html" class="btn btn-primary">
+        <i class="fas fa-user"></i> My Dashboard
+      </a>
+    </div>
+  </nav>
 
-<nav class="navbar glass">
-  <h2 class="logo">Mama-Waithira Salon</h2>
-  <div class="nav-links">
-    <a href="index.html">Home</a>
-    <a href="about.html">About</a>
-    <a href="services.html" class="active">Services</a>
-    <a href="contact.html">Contact</a>
-    <a class="btn" href="signup.html">Get Started</a>
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <h1 class="title fade-up">Premium Beauty Services</h1>
+    <p class="subtitle fade-up">Experience luxury and transformation with our expertly crafted services designed to make you look and feel extraordinary</p>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="stats-section">
+    <div class="stat-card fade-up">
+      <div class="stat-icon">
+        <i class="fas fa-users"></i>
+      </div>
+      <div class="stat-number">500+</div>
+      <p>Happy Clients</p>
+    </div>
+    <div class="stat-card fade-up">
+      <div class="stat-icon">
+        <i class="fas fa-star"></i>
+      </div>
+      <div class="stat-number">4.9</div>
+      <p>Customer Rating</p>
+    </div>
+    <div class="stat-card fade-up">
+      <div class="stat-icon">
+        <i class="fas fa-award"></i>
+      </div>
+      <div class="stat-number">50+</div>
+      <p>Services Available</p>
+    </div>
+    <div class="stat-card fade-up">
+      <div class="stat-icon">
+        <i class="fas fa-calendar-check"></i>
+      </div>
+      <div class="stat-number">1000+</div>
+      <p>Bookings Completed</p>
+    </div>
+  </section>
+
+  <!-- Services Grid -->
+  <section class="services-section">
+    <h2 class="text-center mb-3">Our Services</h2>
+    <div id="services-container" class="services-grid"></div>
+  </section>
+
+  <!-- Bookings Section -->
+  <section class="bookings-section fade-up">
+    <div class="section-header">
+      <h2><i class="fas fa-calendar-alt"></i> Your Bookings</h2>
+      <div class="btn btn-primary" id="viewAllBookings">
+        <i class="fas fa-eye"></i> View All
+      </div>
+    </div>
+    <div id="bookingList" class="bookings-list"></div>
+  </section>
+
+  <!-- Booking Modal -->
+  <div id="bookingModal" class="modal">
+    <div class="modal-content">
+      <span id="closeModal" class="close">&times;</span>
+      <div class="modal-header">
+        <h3 id="modalServiceName">Book Service</h3>
+        <div class="modal-price">KSh <span id="modalServicePrice">0</span></div>
+      </div>
+      
+      <div class="form-group">
+        <label for="bookingDate"><i class="fas fa-calendar"></i> Select Date</label>
+        <input type="date" id="bookingDate" class="form-control" min="">
+      </div>
+      
+      <div class="form-group">
+        <label><i class="fas fa-clock"></i> Select Time Slot</label>
+        <div class="time-slots" id="timeSlots">
+          <!-- Time slots will be generated here -->
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label><i class="fas fa-notes-medical"></i> Special Requests (Optional)</label>
+        <textarea id="specialRequests" class="form-control" rows="3" placeholder="Any special requirements or notes..."></textarea>
+      </div>
+      
+      <button id="confirmBooking" class="btn btn-primary" style="width: 100%;">
+        <i class="fas fa-calendar-check"></i> Confirm Booking
+      </button>
+    </div>
   </div>
-</nav>
 
-<section class="services-section">
-  <h1 class="title">Our Beauty Services</h1>
-  <div id="services-container" class="services-grid"></div>
-</section>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4>Mama Waithira Salon</h4>
+        <p>Your beauty and wellness destination. Experience luxury and transformation.</p>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </div>
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+        <a href="index.html">Home</a>
+        <a href="about.html">About Us</a>
+        <a href="services.html">Services</a>
+        <a href="contact.html">Contact</a>
+        <a href="dashboard.html">My Account</a>
+      </div>
+      <div class="footer-section">
+        <h4>Services</h4>
+        <a href="#hair">Hair Services</a>
+        <a href="#nails">Nail Services</a>
+        <a href="#facial">Facial Treatments</a>
+        <a href="#massage">Massage Therapy</a>
+        <a href="#makeup">Makeup Services</a>
+      </div>
+      <div class="footer-section">
+        <h4>Contact Info</h4>
+        <p><i class="fas fa-map-marker-alt"></i> Nairobi, Kenya</p>
+        <p><i class="fas fa-phone"></i> +254 712 345 678</p>
+        <p><i class="fas fa-envelope"></i> info@mamawaithira.co.ke</p>
+        <p><i class="fas fa-clock"></i> Mon-Sat: 9AM - 7PM</p>
+      </div>
+    </div>
+    <p class="text-center mt-3" style="color: #ccc; font-size: 0.9rem;">
+      © 2024 Mama Waithira Salon. All rights reserved.
+    </p>
+  </footer>
 
-<section class="card fade-up">
-  <h2>Your Bookings</h2>
-  <ul id="bookingList" class="bookings"></ul>
-</section>
+  <script type="module">
+    import { auth } from "./firebase.js";
+    import { book, loadUserBookings } from "./booking.js";
 
-<!-- Booking Modal -->
-<div id="bookingModal" class="modal hidden">
-  <div class="modal-content glass">
-    <span id="closeModal" class="close">&times;</span>
-    <h3 id="modalServiceName"></h3>
-    <p>Price: KSh <span id="modalServicePrice"></span></p>
-    <label>Date: <input type="date" id="bookingDate"></label>
-    <label>Time:
-      <select id="bookingTime">
-        <option>09:00 AM</option>
-        <option>10:00 AM</option>
-        <option>11:00 AM</option>
-        <option>12:00 PM</option>
-        <option>01:00 PM</option>
-        <option>02:00 PM</option>
-        <option>03:00 PM</option>
-      </select>
-    </label>
-    <button id="confirmBooking" class="btn">Confirm Booking</button>
-  </div>
-</div>
+    // Enhanced services array with icons and features
+    const services = [
+      { 
+        name: "Haircut & Styling", 
+        price: 1500, 
+        description: "Professional haircut with modern styling and blow dry",
+        icon: "fas fa-cut",
+        features: ["Modern styling", "Blow dry", "Hair consultation", "30-45 mins"],
+        category: "hair",
+        popular: true
+      },
+      { 
+        name: "Manicure & Pedicure", 
+        price: 2500, 
+        description: "Premium nail care with beautiful polish and design",
+        icon: "fas fa-hand-sparkles",
+        features: ["Nail shaping", "Cuticle care", "Moisturizing", "Design polish"],
+        category: "nails",
+        popular: true
+      },
+      { 
+        name: "Facial Treatment", 
+        price: 3000, 
+        description: "Rejuvenating facial treatment for glowing skin",
+        icon: "fas fa-spa",
+        features: ["Deep cleansing", "Exfoliation", "Mask treatment", "Moisturizing"],
+        category: "facial"
+      },
+      { 
+        name: "Hair Coloring", 
+        price: 4500, 
+        description: "Professional hair coloring with premium products",
+        icon: "fas fa-fill-drip",
+        features: ["Color consultation", "Premium dyes", "Conditioning", "Color protection"],
+        category: "hair",
+        popular: true
+      },
+      { 
+        name: "Bridal Makeup", 
+        price: 5000, 
+        description: "Complete bridal makeup for your special day",
+        icon: "fas fa-heart",
+        features: ["Trial session", "Long-lasting", "Touch-up kit", "Waterproof"],
+        category: "makeup"
+      },
+      { 
+        name: "Relaxation Massage", 
+        price: 3500, 
+        description: "Full body massage for relaxation and stress relief",
+        icon: "fas fa-hands",
+        features: ["Full body", "Aromatherapy", "60 minutes", "Hot stones"],
+        category: "massage"
+      },
+      { 
+        name: "Hair Treatment", 
+        price: 2800, 
+        description: "Deep conditioning treatment for damaged hair",
+        icon: "fas fa-seedling",
+        features: ["Keratin treatment", "Deep conditioning", "Heat protection", "Hair repair"],
+        category: "hair"
+      },
+      { 
+        name: "Gel Nails", 
+        price: 3200, 
+        description: "Long-lasting gel nails with beautiful designs",
+        icon: "fas fa-gem",
+        features: ["Gel application", "Nail art", "Long-lasting", "Shine finish"],
+        category: "nails"
+      },
+      { 
+        name: "Makeup Session", 
+        price: 2800, 
+        description: "Professional makeup for any occasion",
+        icon: "fas fa-paint-brush",
+        features: ["Custom look", "High-end products", "2-hour session", "Photography ready"],
+        category: "makeup"
+      }
+    ];
 
-<script type="module">
-import { auth } from "./firebase.js";
-import { book, loadUserBookings } from "./booking.js";
+    const container = document.getElementById("services-container");
+    const modal = document.getElementById("bookingModal");
+    const modalServiceName = document.getElementById("modalServiceName");
+    const modalServicePrice = document.getElementById("modalServicePrice");
+    const bookingDate = document.getElementById("bookingDate");
+    const timeSlots = document.getElementById("timeSlots");
+    const confirmBooking = document.getElementById("confirmBooking");
+    const closeModal = document.getElementById("closeModal");
+    const specialRequests = document.getElementById("specialRequests");
 
-// Services array
-const services = [
-  { name: "Haircut", price: 800, description: "Stylish haircut tailored to your look." },
-  { name: "Manicure & Pedicure", price: 1200, description: "Beautiful nails and foot care." },
-  { name: "Facial Treatment", price: 1500, description: "Rejuvenate your skin and glow." },
-  { name: "Hair Coloring", price: 2500, description: "Change your hair color with style." },
-  { name: "Makeup", price: 2000, description: "Professional makeup for any occasion." },
-  { name: "Massage Therapy", price: 1800, description: "Relax and relieve tension." }
-];
+    let selectedService = null;
+    let selectedTimeSlot = null;
 
-const container = document.getElementById("services-container");
+    // Set minimum date to today
+    const today = new Date().toISOString().split('T')[0];
+    bookingDate.min = today;
 
-// Modal elements
-const modal = document.getElementById("bookingModal");
-const modalServiceName = document.getElementById("modalServiceName");
-const modalServicePrice = document.getElementById("modalServicePrice");
-const bookingDate = document.getElementById("bookingDate");
-const bookingTime = document.getElementById("bookingTime");
-const confirmBooking = document.getElementById("confirmBooking");
-const closeModal = document.getElementById("closeModal");
+    // Generate time slots
+    function generateTimeSlots() {
+      const slots = [];
+      for (let hour = 9; hour <= 17; hour++) {
+        const time = hour <= 12 ? `${hour}:00 AM` : `${hour - 12}:00 PM`;
+        slots.push(time);
+        if (hour !== 17) { // Don't add :30 for 5:00 PM
+          const time30 = hour <= 12 ? `${hour}:30 AM` : `${hour - 12}:30 PM`;
+          slots.push(time30);
+        }
+      }
+      return slots;
+    }
 
-let selectedService = null;
+    // Render time slots
+    function renderTimeSlots() {
+      timeSlots.innerHTML = '';
+      const slots = generateTimeSlots();
+      slots.forEach(slot => {
+        const slotElement = document.createElement('div');
+        slotElement.className = 'time-slot';
+        slotElement.textContent = slot;
+        slotElement.addEventListener('click', () => {
+          document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+          slotElement.classList.add('selected');
+          selectedTimeSlot = slot;
+        });
+        timeSlots.appendChild(slotElement);
+      });
+    }
 
-// Render services
-services.forEach(s => {
-  const card = document.createElement("div");
-  card.className = "service-card glass";
-  card.innerHTML = `
-    <h3>${s.name}</h3>
-    <p class="desc">${s.description}</p>
-    <p class="price">KSh ${s.price}</p>
-    <button class="btn book-btn">Book Now</button>
-  `;
-  card.querySelector(".book-btn").addEventListener("click", () => {
-    selectedService = s;
-    modalServiceName.textContent = s.name;
-    modalServicePrice.textContent = s.price;
-    bookingDate.value = "";
-    modal.classList.remove("hidden");
-  });
-  container.appendChild(card);
-});
+    // Render services
+    function renderServices() {
+      container.innerHTML = '';
+      services.forEach(service => {
+        const card = document.createElement("div");
+        card.className = "service-card fade-up";
+        card.innerHTML = `
+          ${service.popular ? '<div class="service-badge">Most Popular</div>' : ''}
+          <div class="service-image">
+            <i class="${service.icon}"></i>
+          </div>
+          <div class="service-content">
+            <h3>${service.name}</h3>
+            <p class="service-desc">${service.description}</p>
+            <ul class="service-features">
+              ${service.features.map(feature => `<li><i class="fas fa-check"></i> ${feature}</li>`).join('')}
+            </ul>
+            <div class="service-price">KSh ${service.price.toLocaleString()}</div>
+            <button class="btn btn-primary book-btn" style="width: 100%;">
+              <i class="fas fa-calendar-plus"></i> Book Now
+            </button>
+          </div>
+        `;
+        card.querySelector(".book-btn").addEventListener("click", () => {
+          selectedService = service;
+          modalServiceName.textContent = service.name;
+          modalServicePrice.textContent = service.price.toLocaleString();
+          bookingDate.value = today;
+          selectedTimeSlot = null;
+          specialRequests.value = '';
+          renderTimeSlots();
+          modal.classList.add('show');
+        });
+        container.appendChild(card);
+      });
+    }
 
-// Close modal
-closeModal.addEventListener("click", () => modal.classList.add("hidden"));
+    // Close modal
+    closeModal.addEventListener("click", () => modal.classList.remove("show"));
 
-// Confirm booking
-confirmBooking.addEventListener("click", async () => {
-  if (!bookingDate.value || !bookingTime.value) {
-    alert("Select date and time");
-    return;
-  }
-  await book(selectedService.name, selectedService.price, bookingDate.value, bookingTime.value);
-  modal.classList.add("hidden");
-  loadUserBookings("bookingList");
-});
+    // Close modal when clicking outside
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        modal.classList.remove("show");
+      }
+    });
 
-// Load user bookings
-auth.onAuthStateChanged(user => {
-  if (!user) return;
-  loadUserBookings("bookingList");
-});
-</script>
+    // Confirm booking
+    confirmBooking.addEventListener("click", async () => {
+      if (!bookingDate.value) {
+        alert("Please select a date");
+        return;
+      }
+      
+      if (!selectedTimeSlot) {
+        alert("Please select a time slot");
+        return;
+      }
 
+      const btn = confirmBooking;
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Booking...';
+      btn.classList.add('loading');
+
+      try {
+        await book(
+          selectedService.name, 
+          selectedService.price, 
+          bookingDate.value, 
+          selectedTimeSlot,
+          specialRequests.value
+        );
+        
+        modal.classList.remove("show");
+        alert("Booking confirmed successfully!");
+        loadUserBookings("bookingList");
+        
+        // Show success animation
+        const successIcon = document.createElement('div');
+        successIcon.innerHTML = '<i class="fas fa-check-circle" style="color: #4cd964; font-size: 2rem;"></i>';
+        alert("Booking confirmed!");
+        
+      } catch (error) {
+        alert("Booking failed: " + error.message);
+      } finally {
+        btn.innerHTML = originalText;
+        btn.classList.remove('loading');
+      }
+    });
+
+    // View all bookings
+    document.getElementById('viewAllBookings')?.addEventListener('click', () => {
+      window.location.href = 'dashboard.html';
+    });
+
+    // Load user bookings
+    function loadBookings() {
+      auth.onAuthStateChanged(user => {
+        if (!user) {
+          document.getElementById('bookingList').innerHTML = `
+            <div class="booking-card">
+              <div class="booking-info">
+                <h4>Please login to view your bookings</h4>
+                <p>Sign in to see your upcoming appointments</p>
+              </div>
+              <a href="login.html" class="btn btn-primary">Login</a>
+            </div>
+          `;
+          return;
+        }
+        loadUserBookings("bookingList");
+      });
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      renderServices();
+      renderTimeSlots();
+      loadBookings();
+    });
+
+    // Add keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('show')) {
+        modal.classList.remove('show');
+      }
+    });
+  </script>
 </body>
 </html>
