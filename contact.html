@@ -3,105 +3,920 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us - Salon Web</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Contact Us - Mama Waithira Salon</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #ff6b8b;
+            --primary-light: #ff8fab;
+            --secondary: #6a5af9;
+            --accent: #4dccbd;
+            --dark: #1a1a2e;
+            --light: #ffffff;
+            --gray: #8e8e93;
+            --light-gray: #f8f9fa;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Header & Navigation */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+            padding: 1.5rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .title i {
+            font-size: 2rem;
+        }
+
+        .nav {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav a:hover {
+            color: var(--primary);
+            background: rgba(255, 107, 139, 0.1);
+        }
+
+        .nav a.active {
+            color: var(--primary);
+            background: rgba(255, 107, 139, 0.1);
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 107, 139, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 139, 0.4);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, rgba(255, 107, 139, 0.1), rgba(106, 90, 249, 0.1));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="white" opacity="0.05"/></svg>');
+            background-size: cover;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        /* Contact Cards Section */
+        .contact-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            padding: 3rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .contact-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .contact-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+
+        .contact-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+            color: white;
+            box-shadow: 0 10px 20px rgba(255, 107, 139, 0.3);
+        }
+
+        .contact-card h2 {
+            color: var(--dark);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .contact-card p {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .contact-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(255, 107, 139, 0.3);
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 107, 139, 0.4);
+            gap: 0.8rem;
+        }
+
+        /* Social Media Section */
+        .social-section {
+            padding: 3rem 2rem;
+            background: white;
+            margin: 3rem auto;
+            border-radius: 20px;
+            max-width: 1200px;
+            box-shadow: var(--shadow);
+        }
+
+        .social-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--dark);
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-icon::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(100%);
+            transition: var(--transition);
+        }
+
+        .social-icon:hover::before {
+            transform: translateY(0);
+        }
+
+        .social-icon:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Social Media Colors (Official Brand Colors) */
+        .facebook { background: linear-gradient(135deg, #1877F2, #0D5FBB); }
+        .instagram { background: linear-gradient(135deg, #E4405F, #833AB4, #405DE6); }
+        .tiktok { background: linear-gradient(135deg, #000000, #69C9D0, #EE1D52); }
+        .whatsapp { background: linear-gradient(135deg, #25D366, #128C7E); }
+        .twitter { background: linear-gradient(135deg, #1DA1F2, #0D8BD9); }
+        .youtube { background: linear-gradient(135deg, #FF0000, #CC0000); }
+        .snapchat { background: linear-gradient(135deg, #FFFC00, #FFD800); color: #000 !important; }
+
+        .social-info {
+            text-align: center;
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Contact Form */
+        .form-section {
+            padding: 3rem 2rem;
+            max-width: 800px;
+            margin: 3rem auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .form-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--dark);
+        }
+
+        .contact-form {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .form-control {
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 107, 139, 0.1);
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 2rem 1rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .footer-section p {
+            color: #ccc;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .footer-section a {
+            color: #ccc;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-section a:hover {
+            color: var(--primary);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .footer-social .social-icon {
+            width: 40px;
+            height: 40px;
+            font-size: 1rem;
+        }
+
+        .copyright {
+            text-align: center;
+            color: #999;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+        }
+
+        /* Chat Bot */
+        .chat-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(255, 107, 139, 0.4);
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .chat-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(255, 107, 139, 0.6);
+        }
+
+        .chat-bot {
+            position: fixed;
+            bottom: 5rem;
+            right: 2rem;
+            width: 350px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: none;
+            overflow: hidden;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .chat-bot.show {
+            display: block;
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1.5rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .chat-body {
+            height: 300px;
+            padding: 1.5rem;
+            overflow-y: auto;
+            background: var(--light-gray);
+        }
+
+        .bot-msg, .user-msg {
+            padding: 1rem;
+            border-radius: 15px;
+            margin-bottom: 1rem;
+            max-width: 80%;
+            position: relative;
+        }
+
+        .bot-msg {
+            background: white;
+            border: 1px solid #e0e0e0;
+            margin-right: auto;
+            border-bottom-left-radius: 5px;
+        }
+
+        .user-msg {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 5px;
+        }
+
+        .chat-input {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-top: 1px solid #e0e0e0;
+            outline: none;
+            font-size: 1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .contact-section {
+                grid-template-columns: 1fr;
+                padding: 2rem 1rem;
+            }
+
+            .contact-card {
+                padding: 2rem;
+            }
+
+            .social-icons {
+                gap: 1rem;
+            }
+
+            .social-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+
+            .chat-bot {
+                width: 90vw;
+                right: 5vw;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .contact-card {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-up {
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        /* Map Section */
+        .map-section {
+            padding: 3rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .map-container {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            height: 400px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+    </style>
 </head>
 
 <body>
 
-<header>
-    <h1 class="title">Contact Us</h1>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="title">
+                <i class="fas fa-spa"></i>
+                Mama Waithira Salon
+            </div>
+            <nav class="nav">
+                <a href="index.html">Home</a>
+                <a href="services.html">Services</a>
+                <a href="about.html">About</a>
+                <a href="contact.html" class="active">Contact</a>
+                <a href="dashboard.html" class="btn btn-primary">
+                    <i class="fas fa-user"></i> Dashboard
+                </a>
+            </nav>
+        </div>
+    </header>
 
-    <nav class="nav">
-        <a href="index.html">Home</a>
-        <a href="signup.html">Sign Up</a>
-        <a href="login.html">Login</a>
-        <a href="dashboard.html">Dashboard</a>
-        <a href="contact.html">Contact</a>
-    </nav>
-</header>
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <h1 class="hero-title fade-up">Get In Touch</h1>
+        <p class="hero-subtitle fade-up">We're here to help you look and feel your best. Reach out anytime!</p>
+    </section>
 
-<section class="contact-section">
+    <!-- Contact Cards -->
+    <section class="contact-section">
+        <div class="contact-card fade-up">
+            <div class="contact-icon">
+                <i class="fas fa-phone-alt"></i>
+            </div>
+            <h2>Phone Contact</h2>
+            <p>Call us directly for instant assistance with bookings, inquiries, or emergencies.</p>
+            <a class="contact-btn" href="tel:+254707873458">
+                <i class="fas fa-phone-alt"></i> +254 707 873 458
+            </a>
+        </div>
 
-    <div class="glass-card">
-        <h2>Phone Contact</h2>
-        <p>If you need our services, reach us directly:</p>
-        <a class="contact-btn" href="tel:+254707873458">📞 +254 707 873 458</a>
+        <div class="contact-card fade-up">
+            <div class="contact-icon">
+                <i class="fas fa-envelope"></i>
+            </div>
+            <h2>Email Support</h2>
+            <p>Send us an email for detailed inquiries, feedback, or partnership opportunities.</p>
+            <a class="contact-btn" href="mailto:nwaithira74@gmail.com">
+                <i class="fas fa-envelope"></i> nwaithira74@gmail.com
+            </a>
+        </div>
+
+        <div class="contact-card fade-up">
+            <div class="contact-icon">
+                <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <h2>Visit Our Salon</h2>
+            <p><strong>📍 Mama Waithira Salon</strong><br>
+            Nairobi & Nyeri Town, Skuta, Kenya</p>
+            <p><strong>⏰ Opening Hours:</strong><br>
+            Monday - Saturday: 7:00 AM - 10:00 PM<br>
+            Sunday: 9:00 AM - 8:00 PM</p>
+            <a class="contact-btn" href="#map">
+                <i class="fas fa-directions"></i> Get Directions
+            </a>
+        </div>
+    </section>
+
+    <!-- Social Media Section -->
+    <section class="social-section fade-up">
+        <h2 class="social-title">Connect With Us</h2>
+        <div class="social-icons">
+            <a href="https://facebook.com" target="_blank" class="social-icon facebook">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="https://instagram.com" target="_blank" class="social-icon instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://tiktok.com" target="_blank" class="social-icon tiktok">
+                <i class="fab fa-tiktok"></i>
+            </a>
+            <a href="https://wa.me/254707873458" target="_blank" class="social-icon whatsapp">
+                <i class="fab fa-whatsapp"></i>
+            </a>
+            <a href="https://twitter.com" target="_blank" class="social-icon twitter">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a href="https://youtube.com" target="_blank" class="social-icon youtube">
+                <i class="fab fa-youtube"></i>
+            </a>
+            <a href="https://snapchat.com" target="_blank" class="social-icon snapchat">
+                <i class="fab fa-snapchat-ghost"></i>
+            </a>
+        </div>
+        <p class="social-info">Follow us for the latest updates, promotions, beauty tips, and behind-the-scenes content!</p>
+    </section>
+
+    <!-- Map Section -->
+    <section class="map-section fade-up" id="map">
+        <h2 class="social-title">Our Location</h2>
+        <div class="map-container">
+            <div style="text-align: center; padding: 2rem;">
+                <i class="fas fa-map-marked-alt" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                <h3>Mama Waithira Salon</h3>
+                <p>Nairobi & Nyeri Town, Skuta, Kenya</p>
+                <p style="margin-top: 1rem; font-size: 1rem; opacity: 0.9;">
+                    <i class="fas fa-car"></i> Free Parking Available<br>
+                    <i class="fas fa-wheelchair"></i> Wheelchair Accessible<br>
+                    <i class="fas fa-wifi"></i> Free WiFi
+                </p>
+            </div>
+    </section>
+
+    <!-- Contact Form -->
+    <section class="form-section fade-up">
+        <h2 class="form-title">Send Us a Message</h2>
+        <form class="contact-form" id="contactForm">
+            <div class="form-group">
+                <label for="name"><i class="fas fa-user"></i> Full Name</label>
+                <input type="text" id="name" class="form-control" placeholder="Enter your name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email"><i class="fas fa-envelope"></i> Email Address</label>
+                <input type="email" id="email" class="form-control" placeholder="Enter your email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="phone"><i class="fas fa-phone"></i> Phone Number</label>
+                <input type="tel" id="phone" class="form-control" placeholder="Enter your phone number">
+            </div>
+            
+            <div class="form-group">
+                <label for="subject"><i class="fas fa-tag"></i> Subject</label>
+                <select id="subject" class="form-control" required>
+                    <option value="">Select a subject</option>
+                    <option value="booking">Booking Inquiry</option>
+                    <option value="service">Service Question</option>
+                    <option value="feedback">Feedback</option>
+                    <option value="partnership">Partnership</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="message"><i class="fas fa-comment"></i> Message</label>
+                <textarea id="message" class="form-control" placeholder="Type your message here..." required></textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                <i class="fas fa-paper-plane"></i> Send Message
+            </button>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Mama Waithira Salon</h4>
+                <p>Your premier destination for beauty and wellness services in Kenya.</p>
+                <div class="footer-social">
+                    <a href="https://facebook.com" target="_blank" class="social-icon facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://instagram.com" target="_blank" class="social-icon instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://tiktok.com" target="_blank" class="social-icon tiktok">
+                        <i class="fab fa-tiktok"></i>
+                    </a>
+                    <a href="https://wa.me/254707873458" target="_blank" class="social-icon whatsapp">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Contact Info</h4>
+                <p><i class="fas fa-map-marker-alt"></i> Nairobi & Nyeri Town, Skuta</p>
+                <p><i class="fas fa-phone"></i> +254 707 873 458</p>
+                <p><i class="fas fa-envelope"></i> nwaithira74@gmail.com</p>
+                <p><i class="fas fa-clock"></i> Mon-Sat: 7AM - 10PM</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <p><a href="index.html">Home</a></p>
+                <p><a href="services.html">Services</a></p>
+                <p><a href="about.html">About Us</a></p>
+                <p><a href="dashboard.html">Dashboard</a></p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Support</h4>
+                <p><a href="mailto:lewismwangi990@gmail.com">Website Support</a></p>
+                <p><a href="#">FAQ</a></p>
+                <p><a href="#">Privacy Policy</a></p>
+                <p><a href="#">Terms of Service</a></p>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2024 Mama Waithira Beauty Services. All rights reserved.</p>
+            <p>Website support: <a href="mailto:lewismwangi990@gmail.com">lewismwangi990@gmail.com</a></p>
+        </div>
+    </footer>
+
+    <!-- Chat Bot -->
+    <div class="chat-bot" id="chatBot">
+        <div class="chat-header">
+            <i class="fas fa-robot"></i> Salon Assistant
+        </div>
+        <div class="chat-body" id="chatBody">
+            <p class="bot-msg">Hello! I'm your virtual salon assistant. How can I help you today? 😊</p>
+        </div>
+        <input type="text" id="chatInput" class="chat-input" placeholder="Type your message here...">
     </div>
 
-    <div class="glass-card">
-        <h2>Email Support</h2>
-        <p>For bookings, inquiries, and feedback:</p>
-        <a class="contact-btn" href="mailto:nwaithira74@gmail.com">📩 nwaithira74@gmail.com</a>
-    </div>
+    <button class="chat-toggle" onclick="toggleBot()">
+        <i class="fas fa-comment"></i>
+    </button>
 
-    <div class="glass-card">
-        <h2>Visit Us</h2>
-        <p>We are located at:</p>
-        <p><strong>📍 Mama-Waithira Salon</strong><br>Kenya - Nairobi & Nyeri Town, Skuta</p>
-        <p>Open: <strong>7:00 AM</strong> — Close: <strong>10:00 PM</strong><br>
-        Reliable 24/7 Support</p>
-    </div>
-
-</section>
-
-<footer class="footer">
-    <p>&copy; 2025 Mama-Waithira Beauty Services. All rights reserved.</p>
-    <p>For website complaints, email: 
-        <a href="mailto:lewismwangi990@gmail.com">lewismwangi990@gmail.com</a>
-    </p>
-</footer>
-
-<!-- ✅ Support Bot Widget -->
-<div class="chat-bot" id="chatBot">
-    <div class="chat-header">💬 Help Desk</div>
-    <div class="chat-body" id="chatBody">
-        <p class="bot-msg">Hi! How can we assist you today?</p>
-    </div>
-    <input type="text" id="chatInput" placeholder="Type a message..." />
-</div>
-
-<button class="chat-toggle" onclick="toggleBot()">💬</button>
-
-<script>
-function toggleBot() {
-    const bot = document.getElementById("chatBot");
-    bot.classList.toggle("show");
-}
-
-document.getElementById("chatInput").addEventListener("keypress", function(e){
-    if (e.key === "Enter") {
-        let text = this.value.trim();
-        if(text === "") return;
-
-        let body = document.getElementById("chatBody");
-
-        let userMsg = document.createElement("p");
-        userMsg.className = "user-msg";
-        userMsg.textContent = text;
-        body.appendChild(userMsg);
-
-        // Simple preset replies (SAFE)
-        let botReply = document.createElement("p");
-        botReply.className = "bot-msg";
-
-        if (text.toLowerCase().includes("price")) {
-            botReply.textContent = "Our services range from KSh 500 - 1000 depending on the style.";
-        } else if (text.toLowerCase().includes("location")) {
-            botReply.textContent = "We are located in Nairobi & Nyeri Town, Skuta.";
-        } else if (text.toLowerCase().includes("open")) {
-            botReply.textContent = "We open at 7:00 AM and close at 10:00 PM.";
-        } else {
-            botReply.textContent = "Thank you for your message! Our team will get back to you shortly.";
+    <script>
+        // Chat Bot Functionality
+        function toggleBot() {
+            const bot = document.getElementById("chatBot");
+            bot.classList.toggle("show");
         }
 
-        body.appendChild(botReply);
-        body.scrollTop = body.scrollHeight;
+        const chatInput = document.getElementById("chatInput");
+        const chatBody = document.getElementById("chatBody");
 
-        this.value = "";
-    }
-});
-</script>
+        // Enhanced responses for the chat bot
+        const responses = {
+            greeting: ["Hello! How can I assist you today? 😊", "Hi there! Welcome to Mama Waithira Salon!"],
+            price: "Our services range from KSh 500 to KSh 10,000 depending on the treatment. Would you like to see our full price list?",
+            location: "We have two locations: Nairobi CBD and Nyeri Town, Skuta. Both are open from 7 AM to 10 PM!",
+            hours: "We're open Monday-Saturday: 7AM-10PM, Sunday: 9AM-8PM. 24/7 support for bookings!",
+            booking: "You can book online through our website or call us at +254 707 873 458. Want me to guide you through the booking process?",
+            services: "We offer: Hair Services, Nail Care, Facials, Massage Therapy, and Makeup. Which service interests you?",
+            emergency: "For urgent matters, please call our emergency line: +254 707 873 458",
+            default: "Thank you for your message! Our team will get back to you shortly. Is there anything specific I can help you with?"
+        };
 
+        chatInput.addEventListener("keypress", function(e) {
+            if (e.key === "Enter") {
+                let text = this.value.trim();
+                if(text === "") return;
+
+                // User message
+                let userMsg = document.createElement("p");
+                userMsg.className = "user-msg";
+                userMsg.textContent = text;
+                chatBody.appendChild(userMsg);
+
+                // Bot response
+                let botReply = document.createElement("p");
+                botReply.className = "bot-msg";
+
+                text = text.toLowerCase();
+                let reply = responses.default;
+
+                if (text.includes('hello') || text.includes('hi') || text.includes('hey')) {
+                    reply = responses.greeting[Math.floor(Math.random() * responses.greeting.length)];
+                } else if (text.includes('price') || text.includes('cost') || text.includes('how much')) {
+                    reply = responses.price;
+                } else if (text.includes('location') || text.includes('address') || text.includes('where')) {
+                    reply = responses.location;
+                } else if (text.includes('hour') || text.includes('open') || text.includes('close') || text.includes('time')) {
+                    reply = responses.hours;
+                } else if (text.includes('book') || text.includes('appointment') || text.includes('schedule')) {
+                    reply = responses.booking;
+                } else if (text.includes('service') || text.includes('offer') || text.includes('treatment')) {
+                    reply = responses.services;
+                } else if (text.includes('emergency') || text.includes('urgent') || text.includes('help')) {
+                    reply = responses.emergency;
+                }
+
+                botReply.textContent = reply;
+                chatBody.appendChild(botReply);
+                chatBody.scrollTop = chatBody.scrollHeight;
+                this.value = "";
+            }
+        });
+
+        // Contact Form Submission
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                subject: document.getElementById('subject').value,
+                message: document.getElementById('message').value
+            };
+
+            // In a real application, you would send this to a server
+            console.log('Form submitted:', formData);
+            
+            alert('Thank you for your message! We will get back to you within 24 hours.');
+            this.reset();
+        });
+
+        // Initialize animations
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add fade-up animation to elements
+            const fadeElements = document.querySelectorAll('.fade-up');
+            fadeElements.forEach(el => {
+                el.style.animationDelay = `${Math.random() * 0.5}s`;
+            });
+        });
+    </script>
 </body>
 </html>
